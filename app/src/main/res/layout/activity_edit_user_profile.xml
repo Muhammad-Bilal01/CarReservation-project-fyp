@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".CommonRegistrationActivity2">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/backButtonIB"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:contentDescription="TODO"
+            android:scaleType="fitCenter"
+            android:src="@drawable/back_btn_img"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-30dp"
+            android:layout_marginTop="10dp"
+            android:text="Edit Profile"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:layout_gravity="center"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_user"
+            android:layout_marginTop="20dp"
+            app:civ_border_color="#FF000000"
+            />
+
+        <EditText
+            android:id="@+id/fullNameET"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rounded_edittext_bg"
+            android:hint="Full Name"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="#004AAD"
+            android:textColorHint="#004AAD"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/cnicNoET"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_edittext_bg"
+            android:hint="CNIC Number"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="#004AAD"
+            android:textColorHint="#004AAD"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/mobileNoET"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_edittext_bg"
+            android:hint="Mobile Number"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="#004AAD"
+            android:textColorHint="#004AAD"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/addressET"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_edittext_bg"
+            android:hint="Address"
+            android:maxLines="1"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="#004AAD"
+            android:textColorHint="#004AAD"
+            android:textSize="18dp" />
+
+
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rounded_button_theme_color"
+            android:text="Update"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            app:backgroundTint="@color/theme_color" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

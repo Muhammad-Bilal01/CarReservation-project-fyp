@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="From     ">
+        </TextView>
+        <Spinner
+            android:id="@+id/spinnerFromTime"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:entries="@array/spinner_time_values" />
+        <Spinner
+            android:id="@+id/spinnerFromAmPm"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:entries="@array/spinner_am_pm_values" />
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To     ">
+
+        </TextView>
+        <Spinner
+            android:id="@+id/spinnerToTime"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:longClickable="false"
+            android:entries="@array/spinner_time_values" />
+        <Spinner
+            android:id="@+id/spinnerToAmPm"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:longClickable="false"
+            android:entries="@array/spinner_am_pm_values" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "435132965742",
+    "project_id": "carreservation-94a57",
+    "storage_bucket": "carreservation-94a57.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:435132965742:android:50354a94fbf49bf051d77f",
+        "android_client_info": {
+          "package_name": "com.example.carreservation"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRl_PHS_QWyj1Fif4YnvBAUFMZvjSgeg4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragments.OnlinePaymentFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginRight="20dp"
+                android:text="Send the payment to the account mentioned below and attach screenshot of the payment"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/payment_method_background_rounded"
+                android:padding="12dp">
+
+                <EditText
+                    android:id="@+id/accountTitleET"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/rounded_edittext_bg"
+                    android:hint="Account Title"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:textColorHint="#004AAD"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/ibanET"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_below="@id/accountTitleET"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rounded_edittext_bg"
+                    android:hint="IBAN"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:textColorHint="#004AAD"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/bankNameET"
+                    android:layout_width="170dp"
+                    android:layout_height="48dp"
+                    android:layout_below="@id/ibanET"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rounded_edittext_bg"
+                    android:hint="Bank Name"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:textColorHint="#004AAD"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/branchNameET"
+                    android:layout_width="170dp"
+                    android:layout_height="48dp"
+                    android:layout_below="@id/ibanET"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@id/bankNameET"
+                    android:background="@drawable/rounded_edittext_bg"
+                    android:hint="Branch Name"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:textColorHint="#004AAD"
+                    android:textSize="18dp" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/imgAttachment"
+                android:layout_width="147dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:drawableLeft="@drawable/ic_attachment"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:src="@drawable/ic_attachment"
+                android:text="Attach File" />
+
+            <ImageView
+                android:id="@+id/paymentImage"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_menu_gallery"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnCompleteBooking"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/rounded_button_theme_color"
+                android:text="Complete booking"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                app:backgroundTint="@color/theme_color" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+
+
+</LinearLayout>

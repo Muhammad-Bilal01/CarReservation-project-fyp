@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <ScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+                <EditText
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:textSize="18dp"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:layout_margin="10dp"
+                    android:textColor="#004AAD"
+                    android:background="@drawable/rounded_edittext_bg"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:hint="@string/spot_name"
+                    android:id="@+id/txtSpotName"
+                    android:textColorHint="#004AAD" />
+
+
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:textSize="18dp"
+                    android:layout_margin="10dp"
+                    android:textColor="#004AAD"
+                    android:background="@drawable/rounded_edittext_bg"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:hint="@string/spot_address"
+                    android:id="@+id/txtSpotAddress"
+                    app:layout_constraintTop_toBottomOf="@id/txtSpotName"
+                    android:textColorHint="#004AAD" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/txtLatitude"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_margin="10dp"
+                android:layout_weight=".5"
+                android:background="@drawable/rounded_edittext_bg"
+                android:backgroundTint="#D2CECE"
+                android:enabled="false"
+                android:hint="@string/latitude"
+                android:inputType="numberDecimal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="#004AAD"
+                android:textColorHint="#004AAD"
+                android:textSize="18dp"
+                app:layout_constraintTop_toBottomOf="@id/txtSpotAddress" />
+
+            <EditText
+                android:id="@+id/txtLongitude"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_margin="10dp"
+                android:layout_weight=".5"
+                android:background="@drawable/rounded_edittext_bg"
+                android:backgroundTint="#D2CECE"
+                android:enabled="false"
+                android:hint="@string/longitude"
+                android:inputType="numberDecimal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="#004AAD"
+                android:textColorHint="#004AAD"
+                android:textSize="18dp"
+                app:layout_constraintTop_toBottomOf="@id/txtSpotAddress" />
+        </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:focusable="false"
+                android:layout_margin="10dp"
+                android:textColor="#004AAD"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:hint="@string/spot_location"
+                android:id="@+id/txtSpotLocation"
+                app:layout_constraintTop_toBottomOf="@id/txtSpotName"
+                android:textColorHint="#004AAD" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:textSize="18dp"
+                android:layout_margin="10dp"
+                android:textColor="#004AAD"
+                android:inputType="number"
+                android:background="@drawable/rounded_edittext_bg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:hint="@string/spot_slot_charges"
+                android:id="@+id/txtSpotCharges"
+                app:layout_constraintTop_toBottomOf="@id/txtSpotName"
+                android:textColorHint="#004AAD" />
+
+            <EditText
+                android:id="@+id/txtNumberOfSpot"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:textSize="18dp"
+                android:layout_margin="10dp"
+                android:textColor="#004AAD"
+                android:inputType="number"
+                android:background="@drawable/rounded_edittext_bg"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:hint="@string/number_of_slots_available"
+                app:layout_constraintTop_toBottomOf="@id/txtSpotName"
+                android:textColorHint="#004AAD" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1"
+                android:orientation="horizontal">
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_weight=".5"
+                    android:textSize="18dp"
+                    android:focusable="false"
+                    android:layout_margin="10dp"
+                    android:textColor="#004AAD"
+                    android:background="@drawable/rounded_edittext_bg"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:hint="@string/from_date"
+                    android:drawableEnd="@drawable/calendar"
+                    android:id="@+id/txtFromDate"
+                    app:layout_constraintTop_toBottomOf="@id/txtSpotName"
+                    android:textColorHint="#004AAD" />
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:textSize="18dp"
+                    android:layout_weight=".5"
+                    android:focusable="false"
+                    android:layout_margin="10dp"
+                    android:textColor="#004AAD"
+                    android:drawableEnd="@drawable/calendar"
+                    android:background="@drawable/rounded_edittext_bg"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:hint="@string/to_date"
+                    android:id="@+id/txtToDate"
+                    app:layout_constraintTop_toBottomOf="@id/txtSpotName"
+                    android:textColorHint="#004AAD" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/titleSelectDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textSize="20sp"
+                android:textColor="@color/theme_color"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtSpotCharges" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/titleMonday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/sans"
+                    android:text="@string/monday"
+                    android:textColor="@color/black" />
+
+                <com.github.angads25.toggle.widget.LabeledSwitch
+                    android:id="@+id/switchMonday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="5dp"
+                    android:checked="false"
+                    app:colorBorder="@color/black"
+                    app:colorOff="@color/white"
+                    app:colorOn="@color/black"
+                    app:on="false"
+                    app:textOff=""
+                    app:textOn="" />
+
+                <com.example.carreservation.components.ExpandableHeightGridView
+                    android:id="@+id/mondaySlotsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="gone"
+                    android:numColumns="2"
+                    android:layout_below="@id/titleMonday" />
+
+                <ImageView
+                    android:id="@+id/imgAddMondaySlots"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_below="@id/mondaySlotsList"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/ic_plus"
+                    android:visibility="gone" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/titleTuesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/sans"
+                    android:text="@string/tuesday"
+                    android:textColor="@color/black" />
+
+                <com.github.angads25.toggle.widget.LabeledSwitch
+                    android:id="@+id/switchTuesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="@color/theme_color"
+                    app:textOn=""
+                    app:textOff=""
+                    app:colorBorder="@color/black"
+                    app:colorOn="@color/black"
+                    app:colorOff="@color/white"
+                    app:on="false"
+                    android:checked="false"
+                    android:layout_alignParentEnd="true" />
+
+                <com.example.carreservation.components.ExpandableHeightGridView
+                    android:id="@+id/tuesdaySlotsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="gone"
+                    android:numColumns="2"
+                    android:layout_below="@id/titleTuesday" />
+
+                <ImageView
+                    android:id="@+id/btnAddTuesdaySlots"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_below="@id/tuesdaySlotsList"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/ic_plus"
+                    android:visibility="gone" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/titleWednesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/sans"
+                    android:text="@string/wednesday"
+                    android:textColor="@color/black" />
+
+                <com.github.angads25.toggle.widget.LabeledSwitch
+
+                    android:id="@+id/switchWednesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="5dp"
+                    android:backgroundTint="@color/theme_color"
+                    app:textOn=""
+                    app:textOff=""
+                    app:colorBorder="@color/black"
+                    app:colorOn="@color/black"
+                    app:colorOff="@color/white"
+                    app:on="false"
+                    android:checked="false"
+                    android:layout_marginTop="5dp"
+                />
+
+                <com.example.carreservation.components.ExpandableHeightGridView
+                    android:id="@+id/wednesdaySlotsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="gone"
+                    android:numColumns="2"
+                    android:layout_below="@id/titleWednesday" />
+
+                <ImageView
+                    android:layout_height="25dp"
+                    android:layout_width="25dp"
+                    android:id="@+id/btnAddWednesdaySlots"
+                    android:layout_below="@id/wednesdaySlotsList"
+                    android:src="@drawable/ic_plus"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="10dp"
+                    android:visibility="gone"
+                    app:backgroundTint="@color/theme_color" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/titleThursday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/sans"
+                    android:textColor="@color/black"
+                    android:text="@string/thursday" />
+
+                <com.github.angads25.toggle.widget.LabeledSwitch
+                    android:id="@+id/switchThursday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="5dp"
+                    android:backgroundTint="@color/theme_color"
+                    app:textOn=""
+                    app:textOff=""
+                    app:colorBorder="@color/black"
+                    app:colorOn="@color/black"
+                    app:colorOff="@color/white"
+                    app:on="false"
+                    android:checked="false"
+                    android:layout_marginTop="5dp"
+                    />
+
+                <com.example.carreservation.components.ExpandableHeightGridView
+                    android:id="@+id/thursdaySlotsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="gone"
+                    android:numColumns="2"
+                    android:layout_below="@id/titleThursday" />
+
+                <ImageView
+                    android:id="@+id/btnAddThursdaySlots"
+                    android:layout_height="25dp"
+                    android:layout_width="25dp"
+                    android:layout_below="@id/thursdaySlotsList"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/ic_plus"
+                    android:visibility="gone" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/titleFriday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/sans"
+                    android:textColor="@color/black"
+                    android:text="@string/friday" />
+
+                <com.github.angads25.toggle.widget.LabeledSwitch
+                    android:id="@+id/switchFriday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:backgroundTint="@color/theme_color"
+                    app:textOn=""
+                    app:textOff=""
+                    app:colorBorder="@color/black"
+                    app:colorOn="@color/black"
+                    app:colorOff="@color/white"
+                    app:on="false"
+                    android:checked="false"
+                    android:layout_marginTop="5dp" />
+
+                <com.example.carreservation.components.ExpandableHeightGridView
+                    android:id="@+id/fridaySlotsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="gone"
+                    android:numColumns="2"
+                    android:layout_below="@id/titleFriday" />
+
+                <ImageView
+                    android:id="@+id/btnAddFridaySlots"
+                    android:layout_height="25dp"
+                    android:layout_width="25dp"
+                    android:layout_below="@id/fridaySlotsList"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/ic_plus"
+                    android:visibility="gone" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/titleSaturday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/sans"
+                    android:text="@string/saturday"
+                    android:textColor="@color/black" />
+
+                <com.github.angads25.toggle.widget.LabeledSwitch
+                    android:id="@+id/switchSaturday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:backgroundTint="@color/theme_color"
+                    app:textOn=""
+                    app:textOff=""
+                    app:colorBorder="@color/black"
+                    app:colorOn="@color/black"
+                    app:colorOff="@color/white"
+                    app:on="false"
+                    android:checked="false"
+                    android:layout_marginTop="5dp"
+                    android:layout_alignParentEnd="true" />
+
+                <com.example.carreservation.components.ExpandableHeightGridView
+                    android:id="@+id/saturdaySlotsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="gone"
+                    android:numColumns="2"
+                    android:layout_below="@id/titleSaturday" />
+
+                <ImageView
+                    android:id="@+id/btnAddSaturdaySlots"
+                    android:layout_height="25dp"
+                    android:layout_width="25dp"
+                    android:layout_below="@id/saturdaySlotsList"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/ic_plus"
+                    android:visibility="gone" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/titleSunday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/sans"
+                    android:textColor="@color/black"
+                    android:text="@string/sunday" />
+
+                <com.github.angads25.toggle.widget.LabeledSwitch
+                    android:id="@+id/switchSunday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:backgroundTint="@color/theme_color"
+                    app:textOn=""
+                    app:textOff=""
+                    app:colorBorder="@color/black"
+                    app:colorOn="@color/black"
+                    app:colorOff="@color/white"
+                    app:on="false"
+                    android:checked="false"
+                    android:layout_marginTop="5dp"
+                    android:layout_alignParentEnd="true" />
+
+                <com.example.carreservation.components.ExpandableHeightGridView
+                    android:id="@+id/sundaySlotsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:numColumns="2"
+                    android:layout_margin="10dp"
+                    android:visibility="gone"
+                    android:layout_below="@id/titleSunday" />
+
+                <ImageView
+                    android:id="@+id/btnAddSundaySlots"
+                    android:layout_height="25dp"
+                    android:layout_width="25dp"
+                    android:layout_below="@id/sundaySlotsList"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/ic_plus"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btnNext"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@id/sundaySlotsList"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/rounded_button_theme_color"
+                android:text="@string/next"
+                android:textAllCaps="false"
+
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                app:backgroundTint="@color/theme_color" />
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</RelativeLayout>

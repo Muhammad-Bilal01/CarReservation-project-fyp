@@ -1,0 +1,62 @@
+<resources>
+    <string name="app_name">CarReservation</string>
+    <string name="select_day">Select Day:</string>
+    <string name="monday">Monday</string>
+    <string name="add_slot">Add Slot</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+    <string name="spot_address">Address</string>
+    <string name="spot_name">Spot Name</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="api_key">AIzaSyCRkvBKbn4M411ynbWPxK8OuGCeikaUPz0</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="spot_location">Spot Location</string>
+    <string name="spot_slot_charges">Per hour charges</string>
+    <string name="save_spot">Save Spot</string>
+    <string name="add_spot">Add Spot</string>
+    <string name="from_date">From Date</string>
+    <string name="to_date">To Date</string>
+    <string name="dashboard_title">DASHBOARD</string>
+    <string name="add_spot_title">Add Spot</string>
+    <string name="update_spot_title">Update Spot</string>
+    <string name="delete_spot_title">Delete Spot</string>
+    <string name="view_all_spot_title">View All Spots</string>
+    <string name="view_all_bookings">View All Bookings</string>
+    <string name="logout">Logout</string>
+    <string name="title_activity_vendor_drawer">VendorDrawerActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="next">Next</string>
+    <string name="view_bookings">View Bookings</string>
+    <string name="support_inbox">Support Inbox</string>
+    <string name="vehicle_registration">Vehicle Registration</string>
+    <string name="number_of_slots_available">Number of slots available</string>
+    <string name="personal_information">Personal Information</string>
+    <string name="name">Name</string>
+    <string name="identity_number">Identity Number</string>
+    <string name="payment_methods">Payment Methods</string>
+
+<!--    Drop Down Menu Items -->
+    <string-array name="spots">
+        <item>Garden</item>
+        <item>Nazimabad</item>
+        <item>Lyaari</item>
+    </string-array>
+
+</resources>

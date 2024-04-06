@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="20dp"
+        android:background="#FFF"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+
+        <ImageView
+            android:id="@+id/img_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/ic_baseline_segment_24" />
+
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="20dp"
+            android:text="Car Reservation"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/img_prof"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_baseline_person_24"
+            android:layout_marginRight="30dp"
+            />
+
+    </RelativeLayout>
+
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_below="@id/topBar">
+
+
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:gravity="center"
+           android:orientation="vertical"
+           >
+           <TextView
+               android:id="@+id/upload_heading"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Upload Service"
+               android:textColor="@color/black"
+               android:layout_marginTop="20dp"
+               android:layout_marginRight="20dp"
+               android:textSize="25dp"
+               android:layout_centerHorizontal="true"/>
+
+           <RelativeLayout
+               android:layout_below="@id/upload_heading"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginLeft="20dp"
+               android:layout_marginRight="20dp"
+               android:layout_marginTop="20dp">
+
+               <ImageView
+                   android:id="@+id/uploadimage"
+                   android:layout_width="match_parent"
+                   android:layout_height="200dp"
+                   android:scaleType="fitCenter"
+                   android:src="@drawable/attachment_icon"
+                   android:padding="10dp"/>
+
+               <ProgressBar
+                   android:id="@+id/loader"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_alignTop="@id/uploadimage"
+                   android:layout_alignBottom="@id/uploadimage"
+                   android:layout_centerHorizontal="true"
+                   android:visibility="gone"
+                   app:tint="@color/teal_700"
+                   />
+
+               <ImageButton
+                   android:id="@+id/btn_camera"
+                   android:layout_width="40dp"
+                   android:layout_height="40dp"
+                   android:layout_alignBottom="@id/uploadimage"
+                   android:layout_alignEnd="@id/uploadimage"
+                   android:layout_marginEnd="10dp"
+                   android:background="@color/theme_color"
+                   android:src="@drawable/ic_baseline_camera_alt_24"
+                   android:elevation="5dp"
+                   android:contentDescription="Camera Button" />
+
+<!--               <Button-->
+<!--                   android:layout_below="@+id/uploadimage"-->
+<!--                   android:layout_width="match_parent"-->
+<!--                   android:layout_height="45dp"-->
+<!--                   android:layout_marginTop="30dp"-->
+<!--                   android:text="Upload Image"-->
+<!--                   android:textColor="@color/white"-->
+<!--                   android:textSize="18dp"-->
+<!--                   android:textAllCaps="false"-->
+<!--                   android:id="@+id/image_upload_button"-->
+<!--                   android:background="@drawable/rounded_button_theme_color"-->
+<!--                   app:backgroundTint="@color/theme_color"/>-->
+
+
+               <EditText
+                   android:layout_below="@+id/uploadimage"
+                   android:layout_width="match_parent"
+                   android:layout_height="45dp"
+                   android:textSize="18dp"
+                   android:layout_marginTop="30dp"
+                   android:textColor="#000"
+                   android:background="@drawable/rounded_edittext_bg"
+                   android:paddingLeft="15dp"
+                   android:paddingRight="15dp"
+                   android:hint="Parking Name"
+                   android:id="@+id/name"
+                   android:textColorHint="#004AAD"/>
+
+               <EditText
+                   android:layout_below="@+id/name"
+                   android:layout_width="match_parent"
+                   android:layout_height="45dp"
+                   android:textSize="18dp"
+                   android:layout_marginTop="10dp"
+                   android:textColor="#000"
+                   android:background="@drawable/rounded_edittext_bg"
+                   android:paddingLeft="15dp"
+                   android:paddingRight="15dp"
+                   android:hint="Enter Location"
+                   android:id="@+id/location"
+                   android:textColorHint="#004AAD"/>
+
+               <EditText
+                   android:layout_below="@+id/location"
+                   android:layout_width="match_parent"
+                   android:layout_height="45dp"
+                   android:textSize="18dp"
+                   android:layout_marginTop="10dp"
+                   android:textColor="#000"
+                   android:background="@drawable/rounded_edittext_bg"
+                   android:paddingLeft="15dp"
+                   android:paddingRight="15dp"
+                   android:hint="Enter Slot Number"
+                   android:id="@+id/slot"
+                   android:textColorHint="#004AAD"/>
+
+
+
+               <LinearLayout
+                   android:id="@+id/date_picker"
+                   android:layout_below="@+id/slot"
+                   android:layout_marginTop="10dp"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal"
+                   android:padding="13dp"
+                   android:background="@drawable/rounded_edittext_bg">
+
+                   <TextView
+                       android:id="@+id/selectedDateTextView"
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:text="Date"
+                       android:textColor="#004AAD"
+                       android:textSize="18sp" />
+
+                   <ImageView
+                       android:layout_width="16dp"
+                       android:layout_height="16dp"
+                       android:layout_marginLeft="10dp"
+                       android:src="@drawable/ic_baseline_calendar_today_24"
+                       android:contentDescription="Calendar Icon"
+                       android:layout_gravity="center_vertical" />
+               </LinearLayout>
+
+               <EditText
+                   android:layout_below="@+id/date_picker"
+                   android:layout_width="match_parent"
+                   android:layout_height="45dp"
+                   android:textSize="18dp"
+                   android:layout_marginTop="10dp"
+                   android:textColor="#000"
+                   android:background="@drawable/rounded_edittext_bg"
+                   android:paddingLeft="15dp"
+                   android:paddingRight="15dp"
+                   android:hint="Enter Hourly Price"
+                   android:id="@+id/hourly_price"
+                   android:textColorHint="#004AAD"/>
+
+
+               <Button
+                   android:layout_below="@+id/hourly_price"
+                   android:layout_width="match_parent"
+                   android:layout_height="45dp"
+                   android:layout_marginTop="30dp"
+                   android:layout_marginBottom="100dp"
+                   android:text="Submit"
+                   android:textColor="@color/white"
+                   android:textSize="18dp"
+                   android:textAllCaps="false"
+                   android:id="@+id/submit_button"
+                   android:background="@drawable/rounded_button_theme_color"
+                   app:backgroundTint="@color/theme_color"/>
+
+
+
+           </RelativeLayout>
+       </RelativeLayout>
+   </ScrollView>
+
+
+    <RelativeLayout
+        android:id="@+id/card_Bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+
+        android:background="@android:color/transparent">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/card_BottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <com.google.android.material.bottomappbar.BottomAppBar
+                android:id="@+id/bottm_AppBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="45dp"
+                app:backgroundTint="#fff"
+                app:elevation="0dp">
+
+                <com.google.android.material.bottomnavigation.BottomNavigationView
+                    android:id="@+id/bottm_navigation"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    app:backgroundTint="@android:color/transparent"
+                    app:elevation="0dp"
+                    app:itemTextColor="#231F20"
+                    app:labelVisibilityMode="labeled"
+                    app:menu="@menu/navigation_menu" />
+
+            </com.google.android.material.bottomappbar.BottomAppBar>
+
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
