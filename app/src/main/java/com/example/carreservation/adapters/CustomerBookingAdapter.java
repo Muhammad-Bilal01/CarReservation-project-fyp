@@ -31,9 +31,12 @@ import com.example.carreservation.interfaces.SelectBookingListener;
 import com.example.carreservation.models.Booking;
 import com.example.carreservation.models.SelectedSlot;
 import com.example.carreservation.models.Spot;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.Chip;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.time.Duration;
@@ -42,7 +45,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBookingAdapter.CustomerBookingViewHolder> {
 
@@ -78,6 +83,8 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
             }
         });
 
+
+//        on review button click
         holder.btnReview.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -100,8 +107,22 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
                                     @Override
                                     public void onClick(View v) {
                                         float rating = ratingBar.getRating();
-                                        Toast.makeText(mContext,String.valueOf(rating)+" "+reviewMsg.getText(),Toast.LENGTH_SHORT ).show();
-                                        dialog.dismiss();
+                                        Map<String,Object> reviewsData = new HashMap<String,Object>();
+                                        reviewsData.put("customerId", bookingViewModel.getCustomerId());
+                                        reviewsData.put("spotId", bookingViewModel.getSpotId());
+                                        reviewsData.put("vendorId", bookingViewModel.getVendorId());
+                                        reviewsData.put("reviews", rating);
+                                        reviewsData.put("message", reviewMsg.getText().toString());
+                                        FirebaseFirestore.getInstance().collection("reviews").add(reviewsData).addOnSuccessListener(
+                                                new OnSuccessListener<DocumentReference>() {
+                                                    @Override
+                                                    public void onSuccess(DocumentReference documentReference) {
+                                                        Toast.makeText(mContext,"Thanks for Your Review",Toast.LENGTH_SHORT ).show();
+                                                        dialog.dismiss();
+                                                    }
+                                                }
+                                        );
+//                                        System.out.println(reviewsData);
                                     }
                                 }
                         );

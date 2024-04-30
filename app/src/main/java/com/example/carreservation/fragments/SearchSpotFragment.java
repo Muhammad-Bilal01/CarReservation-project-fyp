@@ -1,6 +1,5 @@
 package com.example.carreservation.fragments;
 
-import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.Manifest;
 import android.content.Context;
@@ -15,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,10 +43,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -183,21 +185,39 @@ public class SearchSpotFragment extends Fragment implements OnItemClickListener 
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     float[] results = new float[1];
-                    spotList[0].clear();
-                    for (Spot spot :
-                            globalSpotList) {
-                        Location.distanceBetween(latitude, longitude, spot.getSpotLat(), spot.getSpotLong(), results);
+//                    spotList[0].clear();
+                    parkingSpotList[0].clear();
+//                    for (Spot spot :
+//                            globalSpotList) {
+//                        Location.distanceBetween(latitude, longitude, spot.getSpotLat(), spot.getSpotLong(), results);
+//                        if ((results[0] / 1000) <= 10) {
+//                            if (txtSearch.getQuery().length() <= 0 || spot.getSpotName().toLowerCase().contains(txtSearch.getQuery().toString().toLowerCase())) {
+//                                spotList[0].add(spot);
+//                            }
+//                        }
+//                    }
+                    for (Map<String, Object> spot :
+                            globalParkingSpots) {
+                        Location.distanceBetween(latitude, longitude,
+                                Double.parseDouble(spot.get("lat").toString()),
+                                Double.parseDouble(spot.get("long").toString()),
+                                results);
                         if ((results[0] / 1000) <= 10) {
-                            if (txtSearch.getQuery().length() <= 0 || spot.getSpotName().toLowerCase().contains(txtSearch.getQuery().toString().toLowerCase())) {
-                                spotList[0].add(spot);
+                            if (txtSearch.getQuery().length() <= 0 || spot.get("spotTitle").toString().toLowerCase().contains(txtSearch.getQuery().toString().toLowerCase())) {
+//                                spotList[0].add(spot);
+                                parkingSpotList[0].add(spot);
                             }
                         }
                     }
                     searchSpotAdapter.notifyDataSetChanged();
                 } else {
-                    spotList[0].clear();
-                    for (Spot spot : globalSpotList)
-                        spotList[0].add(spot);
+//                    spotList[0].clear();
+//                    for (Spot spot : globalSpotList)
+//                        spotList[0].add(spot);
+
+                    parkingSpotList[0].clear();
+                    for (Map<String, Object> spot : globalParkingSpots)
+                        parkingSpotList[0].add(spot);
                     searchSpotAdapter.notifyDataSetChanged();
                 }
             }
@@ -249,8 +269,42 @@ public class SearchSpotFragment extends Fragment implements OnItemClickListener 
 //                                ParkingSpots myParkingSpot = d.toObject(ParkingSpots.class);
 //                                myParkingSpot.setId(d.getId());
 
-                                globalParkingSpots.add(parkingSpots);
-                                parkingSpotList[0].add(parkingSpots);
+
+
+
+                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+//                                To make if the last date is gone no data will show
+                                    String endDate = parkingSpots.get("toData").toString();
+                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+
+                                    // Parse the user-provided date string into a LocalDate object
+                                    LocalDate userDate = LocalDate.parse(endDate, formatter);
+
+                                    // Get the current date
+                                    LocalDate currentDate = LocalDate.now();
+
+
+                                    // Perform comparison
+                                    if (userDate.isBefore(currentDate)) {
+                                        System.out.println("The user-provided date is before the current date.");
+                                        // Do something if the user-provided date is earlier than the current date
+                                        System.out.println("End Date: " + endDate);
+                                        System.out.println("Current Date: " + currentDate);
+                                    } else if (userDate.isAfter(currentDate)) {
+                                        System.out.println("The user-provided date is after the current date.");
+                                        // Do something if the user-provided date is later than the current date
+                                        parkingSpotList[0].add(parkingSpots);
+                                        globalParkingSpots.add(parkingSpots);
+                                    } else {
+                                        System.out.println("The user-provided date is the same as the current date.");
+                                        // Do something if the user-provided date is the same as the current date
+                                    }
+                                }
+
+//                                parkingSpotList[0].add(parkingSpots);
+//                                globalParkingSpots.add(parkingSpots);
 
 //                                System.out.println("+++++++++++++++++++++++++++++++++++++++++++");
 //                                System.out.println(d.getId());
@@ -287,19 +341,18 @@ public class SearchSpotFragment extends Fragment implements OnItemClickListener 
     }
 
 
-
     @Override
-    public void onDeleteButtonClick(Map<String,Object> model, int position) {
+    public void onDeleteButtonClick(Map<String, Object> model, int position) {
 
     }
 
     @Override
-    public void onUpdateButtonClick(Map<String,Object> model, int position) {
+    public void onUpdateButtonClick(Map<String, Object> model, int position) {
 
     }
 
     @Override
-    public void onDetailsButtonClick(Map<String,Object>  model, int position) {
+    public void onDetailsButtonClick(Map<String, Object> model, int position) {
 
 
     }
@@ -318,12 +371,12 @@ public class SearchSpotFragment extends Fragment implements OnItemClickListener 
     public void onMyBookButtonClick(Map<String, Object> model, int position) {
 
         String id = "";
-        for (Map.Entry<String,Object> paringSpot:model.entrySet()) {
+        for (Map.Entry<String, Object> paringSpot : model.entrySet()) {
             String key = paringSpot.getKey();
             Object value = paringSpot.getValue();
 
             System.out.println("Key: " + key + ", Value: " + value);
-            if(key.equalsIgnoreCase("id")){
+            if (key.equalsIgnoreCase("id")) {
                 System.out.println(id);
                 id = value.toString();
             }
