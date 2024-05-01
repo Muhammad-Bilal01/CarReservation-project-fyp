@@ -39,11 +39,22 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -126,8 +137,8 @@ public class VendorBookingsFragment extends Fragment implements VendorBookingLis
 
             // Set popupWindow height to 500px
             popupWindow.setHeight(3);
-        }
-        catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException |
+                 IllegalAccessException e) {
             // silently fail...
         }
 
@@ -140,15 +151,15 @@ public class VendorBookingsFragment extends Fragment implements VendorBookingLis
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(!parent.getItemAtPosition(position).toString().equalsIgnoreCase("All Spots")){
-                bookings.clear();
-                for (Booking booking :
-                        globalBookingList) {
-                    if ((booking.getSpotName().equalsIgnoreCase(parent.getItemAtPosition(position).toString()))) {
-                        bookings.add(booking);
+                if (!parent.getItemAtPosition(position).toString().equalsIgnoreCase("All Spots")) {
+                    bookings.clear();
+                    for (Booking booking :
+                            globalBookingList) {
+                        if ((booking.getSpotName().equalsIgnoreCase(parent.getItemAtPosition(position).toString()))) {
+                            bookings.add(booking);
+                        }
                     }
-                }
-                }else{
+                } else {
                     bookings.addAll(globalBookingList);
                 }
                 vendorBookingAdapter.notifyDataSetChanged();
@@ -159,7 +170,6 @@ public class VendorBookingsFragment extends Fragment implements VendorBookingLis
 
             }
         });
-
 
 
         txtSearch = view.findViewById(R.id.txt_search_booking);
@@ -253,18 +263,84 @@ public class VendorBookingsFragment extends Fragment implements VendorBookingLis
 
     //    to update the booking status of the user bookings
     void updatePendingStatus(String documentId, Booking model) {
-        model.setBookingStatus("Booked");
+        model.setBookingStatus("Booked"); // Change this
         model.setId(documentId);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Bookings").document(documentId).set(model).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Toast.makeText(getActivity(), "Update Status ", Toast.LENGTH_SHORT).show();
+                sendNotification("Your booking has been approved",model);
+
+//                Toast.makeText(getActivity(), "Update Status ", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(getActivity(), "Update Failed!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void sendNotification(String message, Booking model) {
+
+//        current username, message,current userid, otherusertoken
+
+        String currentUser = model.getVendorId();
+        String otherUserToken = "cBAdrTcRQOWVb5Oynn5B_M:APA91bF-E7FwVHhAaQYxKqrGXghjzVgm4wigjJL9awUKPz-sIGqx7sbOdeJhSe9n7AYXjCCwxEpyusA3lGLUaNC7r8k--4DklEvWXCFUpHbQsD0SK3radV-VB33l4gpprhVRmRBbLyBO";
+
+
+        try {
+            JSONObject jsonObject = new JSONObject();
+
+
+            JSONObject notificationJsonObject = new JSONObject();
+            notificationJsonObject.put("title","Booking Notification");
+            notificationJsonObject.put("body",message);
+
+            JSONObject dataJsonObject = new JSONObject();
+            dataJsonObject.put("uuid",currentUser);
+
+            jsonObject.put("notification",notificationJsonObject);
+            jsonObject.put("data",dataJsonObject);
+            jsonObject.put("to",otherUserToken);
+
+
+            System.out.println("API Call Success");
+            apiCall(jsonObject);
+            Toast.makeText(getActivity(), "Update Status ", Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            System.out.println("+++++++++++++++++++++++++ ERROR +++++++++++++++++++++++++++++++++++++++++++++++");
+            System.out.println("Exception " + e.getCause() + e.getMessage());
+        }
+
+
+
+    }
+
+    private void apiCall(JSONObject json) {
+        MediaType JSON = MediaType.get("application/json");
+
+        OkHttpClient client = new OkHttpClient();
+
+        String url = "https://fcm.googleapis.com/fcm/send";
+        RequestBody body = RequestBody.create(json.toString(), JSON);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .header("Authorization", "Bearer AAAAZU_yI24:APA91bGcSMxFm_ysrdLVqfv5nh3WIiSKK4sbdI_lqqELM7_GKjyNPwRmtzeykF6r8hBzfD4ENBy_konBVGZqYTiJjUlcziipsRx5BFBIJ_AE2Qqmstk9913RA0hmuBqvhO0ej3gd90t5")
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                System.out.println("Error : "+e);
+
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                System.out.println("Response " + response);
             }
         });
     }
