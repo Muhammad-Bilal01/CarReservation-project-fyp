@@ -142,6 +142,9 @@ public class SelectPaymentModeFragment extends Fragment {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
 
                 String fullName = documentSnapshot.getData().get("fullName").toString(); // for getting user name
+                String userFCMToken = documentSnapshot.getData().get("FCM_Token").toString(); // for getting user FCM Token
+                System.out.println("User Token"+ userFCMToken);
+
                 bookingViewModel.setPaymentMode("Cash Payment");
                 bookingViewModel.setPaymentScreenShotUrl("https://static.vecteezy.com/system/resources/thumbnails/005/835/168/small/hand-holding-money-illustration-free-vector.jpg");
                 Booking booking = new Booking(
@@ -160,6 +163,7 @@ public class SelectPaymentModeFragment extends Fragment {
                         FirebaseAuth.getInstance().getCurrentUser().getUid(), // Current User
                         false, // booking completed
                         fullName, // customer name
+                        userFCMToken, // USER FCM Token
                         bookingViewModel.gtSpotImages().getValue() // spot Images
                 );
 
