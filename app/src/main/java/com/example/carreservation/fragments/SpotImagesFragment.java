@@ -61,7 +61,7 @@ import java.util.Map;
 import java.util.UUID;
 
 
-public class SpotImagesFragment extends Fragment implements OnItemClickListener {
+public class SpotImagesFragment extends Fragment implements  OnItemClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -111,7 +111,6 @@ public class SpotImagesFragment extends Fragment implements OnItemClickListener 
 
     // creating object of ViewPager
     ViewPager mViewPager;
-
     //List<Uri> uploadImageList;
     // images array
     List<Object> images;
@@ -184,6 +183,7 @@ public class SpotImagesFragment extends Fragment implements OnItemClickListener 
         });
 
         setObservers();
+
 
         return view;
     }
@@ -290,8 +290,6 @@ public class SpotImagesFragment extends Fragment implements OnItemClickListener 
     }
 
 
-
-
     // this function is triggered when
     // the Select Image Button is clicked
     void imageChooser() {
@@ -328,34 +326,69 @@ public class SpotImagesFragment extends Fragment implements OnItemClickListener 
             int count = data.getClipData().getItemCount();
             for (int i = 0; i < count; i++) {
                 Uri imageUri = data.getClipData().getItemAt(i).getUri();
-                imgDefault.setVisibility(View.GONE);
+                imgDefault.setVisibility(View.INVISIBLE);
                 images.add(imageUri);
+
                 mViewPagerAdapter.notifyDataSetChanged();
 
             }
+
             mViewPager.setVisibility(View.VISIBLE);
             mViewPager.setAdapter(mViewPagerAdapter);
 
-//                to set image slider dot indicator
-            if (images.size() > 0) {
+            onUpdatePager();
 
-                    mViewPagerAdapter.notifyDataSetChanged();
-                    dotscount = mViewPagerAdapter.getCount();
-                    dots = new ImageView[dotscount];
-
-                    for (int i = 0; i < dotscount; i++) {
-
-                        dots[i] = new ImageView(getActivity());
-                        dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.non_active_dot));
-
-                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                        params.setMargins(8, 0, 8, 0);
-                        sliderDots.addView(dots[i], params);
-                    }
-                    dots[0].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.active_dot));
-                }
             }
+
+
+
+
+//        }
+
+//        if (resultCode == RESULT_OK) {
+//
+//            // compare the resultCode with the
+//            // SELECT_PICTURE constant
+//            if (requestCode == SELECT_PICTURE) {
+//                // Get the url of the image from data
+//                Uri selectedImageUri = data.getData();
+//                if (null != selectedImageUri) {
+//
+//                    imgDefault.setVisibility(View.GONE);
+//                    mViewPagerAdapter.notifyDataSetChanged();
+//                    images.add(selectedImageUri);
+//                    mViewPagerAdapter.notifyDataSetChanged();
+//                    mViewPager.setVisibility(View.VISIBLE);
+//                    mViewPager.setAdapter(mViewPagerAdapter);
+//                }
+//            }
+//        }
+    }
+
+    private void onUpdatePager(){
+
+//                to set image slider dot indicator
+        if (images.size() > 0) {
+
+            mViewPagerAdapter.notifyDataSetChanged();
+            dotscount = mViewPagerAdapter.getCount();
+
+            dots = new ImageView[dotscount];
+            sliderDots.setVisibility(View.VISIBLE);
+
+            for (int i = 0; i < dotscount; i++) {
+
+                dots[i] = new ImageView(getActivity());
+
+                dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.non_active_dot));
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                params.setMargins(8, 0, 8, 0);
+                sliderDots.addView(dots[i], params);
+            }
+            dots[0].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.active_dot));
+        }
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -380,26 +413,6 @@ public class SpotImagesFragment extends Fragment implements OnItemClickListener 
             }
         });
 
-//        }
-
-//        if (resultCode == RESULT_OK) {
-//
-//            // compare the resultCode with the
-//            // SELECT_PICTURE constant
-//            if (requestCode == SELECT_PICTURE) {
-//                // Get the url of the image from data
-//                Uri selectedImageUri = data.getData();
-//                if (null != selectedImageUri) {
-//
-//                    imgDefault.setVisibility(View.GONE);
-//                    mViewPagerAdapter.notifyDataSetChanged();
-//                    images.add(selectedImageUri);
-//                    mViewPagerAdapter.notifyDataSetChanged();
-//                    mViewPager.setVisibility(View.VISIBLE);
-//                    mViewPager.setAdapter(mViewPagerAdapter);
-//                }
-//            }
-//        }
     }
 
     private void uploadImage() {
@@ -673,24 +686,30 @@ public class SpotImagesFragment extends Fragment implements OnItemClickListener 
     @Override
     public void onDeleteButtonClick(Map<String, Object> model, int position) {
 
-        List<String> updatedImages = new ArrayList<>();
-        if (IsUpdate && images.size() > 0) {
-            String[] imgArray = spot.getSpotImages().split("\\|");
-            for (String url :
-                    imgArray) {
-                if (!images.get(position).toString().equals(url)) {
-                    updatedImages.add(url);
-                }
-            }
-            if (updatedImages.size() > 0)
-                spot.setSpotImages(String.join("|", updatedImages));
-        }
+
+//        List<String> updatedImages = new ArrayList<>();
+//        if (IsUpdate && images.size() > 0) {
+//            String[] imgArray = spot.getSpotImages().split("\\|");
+//            for (String url :
+//                    imgArray) {
+//                if (!images.get(position).toString().equals(url)) {
+//                    updatedImages.add(url);
+//                }
+//            }
+//            if (updatedImages.size() > 0)
+//                spot.setSpotImages(String.join("|", updatedImages));
+//        }
         images.remove(position);
         mViewPagerAdapter.notifyDataSetChanged();
-        if (images.size() == 0) {
-            imgDefault.setVisibility(View.VISIBLE);
+        mViewPager.setAdapter(mViewPagerAdapter);
+        if ( images.isEmpty()|| images.size() == 0 ) {
+            mViewPagerAdapter = new ViewPagerAdapter(getActivity(), images);
+            mViewPager.setAdapter(mViewPagerAdapter);
+            sliderDots.setVisibility(View.GONE);
             mViewPager.setVisibility(View.GONE);
             mViewPagerAdapter.notifyDataSetChanged();
+            imgDefault.setVisibility(View.VISIBLE);
+
         }
         Toast.makeText(getActivity(), "Image removed", Toast.LENGTH_SHORT).show();
     }

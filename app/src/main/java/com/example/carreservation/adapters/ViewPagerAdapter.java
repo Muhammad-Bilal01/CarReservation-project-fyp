@@ -18,6 +18,7 @@ import com.example.carreservation.models.Spot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -66,7 +67,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                onItemClickListener.onDeleteButtonClick(new Spot(),position);
+                onItemClickListener.onDeleteButtonClick(new HashMap<String,Object>(),position);
             }
         });
 

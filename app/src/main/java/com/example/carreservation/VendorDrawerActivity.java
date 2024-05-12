@@ -77,11 +77,11 @@ public class VendorDrawerActivity extends AppCompatActivity implements BottomNav
         userProfile = findViewById(R.id.img_user_profile);
 
 //        Disable
-        updateSpotLayout.setEnabled(false);
-        addSpotLayout.setEnabled(false);
-        deleteSpotLayout.setEnabled(false);
-        viewAllBookingsLayout.setEnabled(false);
-        viewSpotLayout.setEnabled(false);
+//        updateSpotLayout.setEnabled(false);
+//        addSpotLayout.setEnabled(false);
+//        deleteSpotLayout.setEnabled(false);
+//        viewAllBookingsLayout.setEnabled(false);
+//        viewSpotLayout.setEnabled(false);
 
         //txtProfileTitle.setText("Test");
         DocumentReference reference = FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -115,7 +115,7 @@ public class VendorDrawerActivity extends AppCompatActivity implements BottomNav
                 handleDrawer();
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.flFragment, new AddSpotFragment())
+                        .replace(R.id.flFragment, new AddSpotFragment()).addToBackStack("")
                         .commit();
             }
         });
@@ -123,9 +123,14 @@ public class VendorDrawerActivity extends AppCompatActivity implements BottomNav
             @Override
             public void onClick(View view) {
                 handleDrawer();
+                Bundle bundle=new Bundle();
+                bundle.putString("fragmentTag","1");
+                Fragment viewAll=new VendorAllSpotsFragment();
+                viewAll.setArguments(bundle);
+
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.flFragment, new UpdateSpotFragment())
+                        .replace(R.id.flFragment, viewAll).addToBackStack("")
                         .commit();
             }
         });
@@ -135,7 +140,7 @@ public class VendorDrawerActivity extends AppCompatActivity implements BottomNav
                 handleDrawer();
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.flFragment, new DeleteSpotFragment())
+                        .replace(R.id.flFragment, new DeleteSpotFragment()).addToBackStack("")
                         .commit();
             }
         });
@@ -143,21 +148,32 @@ public class VendorDrawerActivity extends AppCompatActivity implements BottomNav
             @Override
             public void onClick(View view) {
                 handleDrawer();
+
+                Bundle bundle=new Bundle();
+                bundle.putString("fragmentTag","2");
+                Fragment viewAll=new VendorAllSpotsFragment();
+                viewAll.setArguments(bundle);
+
+//                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack("").replace(R.id.flFragment,
+//                        viewAll).commit();
+
+
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.flFragment, new ViewSpotsFragment())
+                        .replace(R.id.flFragment, viewAll).addToBackStack("")
                         .commit();
             }
         });
+
         viewAllBookingsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 handleDrawer();
-                Toast.makeText(VendorDrawerActivity.this,"Booking is not complete yet",Toast.LENGTH_SHORT).show();
-//                getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.flFragment, new VendorBookingsFragment())
-//                        .commit();
+//                Toast.makeText(VendorDrawerActivity.this,"Booking is not complete yet",Toast.LENGTH_SHORT).show();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.flFragment, new VendorBookingsFragment())
+                        .commit();
             }
         });
 
@@ -228,13 +244,13 @@ public class VendorDrawerActivity extends AppCompatActivity implements BottomNav
         int itemId = item.getItemId();
         if (itemId == R.id.imgHome) {
             getSupportFragmentManager().beginTransaction().addToBackStack("").replace(R.id.flFragment,
-                    new VendorDashboardFragment()).commit();
+                    vendorDashboardFragment).commit();
             return true;
         } else if (itemId == R.id.img_booking) {
 //            Toast.makeText(this,"Booking is not complete yet",Toast.LENGTH_SHORT).show();
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.flFragment, new VendorBookingsFragment()).addToBackStack("")
+                    .replace(R.id.flFragment, vendorBookingsFragment).addToBackStack("")
                     .commit();
 //            return true;
         } else if (itemId == R.id.imgProfile) {

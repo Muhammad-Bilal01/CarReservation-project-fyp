@@ -49,7 +49,7 @@ public class UpdateSpotFragment extends Fragment implements OnItemClickListener 
     private String mParam1;
     private String mParam2;
 
-    public UpdateSpotFragment() {
+    public  UpdateSpotFragment() {
         // Required empty public constructor
     }
 

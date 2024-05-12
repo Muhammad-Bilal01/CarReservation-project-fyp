@@ -1,5 +1,6 @@
 package com.example.carreservation.adapters;
 
+import android.annotation.SuppressLint;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +17,16 @@ import com.example.carreservation.R;
 import com.example.carreservation.interfaces.OnItemClickListener;
 import com.example.carreservation.models.AvailableSlot;
 import com.example.carreservation.models.Spot;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -72,6 +78,8 @@ public class SearchSpotAdapter extends RecyclerView.Adapter<SearchSpotAdapter.Se
 
     public class SearchSpotViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView nameTextView;
+        private TextView ratingText;
+        private TextView userText;
         private TextView addressTextView;
         private TextView txtSpotsLeft;
         private TextView txtPricePerHour;
@@ -80,10 +88,16 @@ public class SearchSpotAdapter extends RecyclerView.Adapter<SearchSpotAdapter.Se
         private MaterialButton btnBook;
         private MaterialCardView materialCardView;
 
+        //        Firebase
+        private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        ;
+
 
         public SearchSpotViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.txt_spot_name);
+            ratingText = itemView.findViewById(R.id.rating_txt);
+            userText = itemView.findViewById(R.id.noOfUser_txt);
             addressTextView = itemView.findViewById(R.id.txt_spot_address);
             txtSpotsLeft = itemView.findViewById(R.id.txt_spot_left);
             txtPricePerHour = itemView.findViewById(R.id.txt_price_per_hour);
@@ -100,7 +114,7 @@ public class SearchSpotAdapter extends RecyclerView.Adapter<SearchSpotAdapter.Se
                     public void onClick(View view) {
 //                        onItemClickListener.onBookButtonClick(spotList.get(getAdapterPosition()),getAdapterPosition());
                         System.out.println("Clicked...");
-                        onItemClickListener.onMyBookButtonClick(paringSpotList.get(getAdapterPosition()),getAdapterPosition());
+                        onItemClickListener.onMyBookButtonClick(paringSpotList.get(getAdapterPosition()), getAdapterPosition());
                     }
                 });
 
@@ -108,7 +122,7 @@ public class SearchSpotAdapter extends RecyclerView.Adapter<SearchSpotAdapter.Se
                     @Override
                     public void onClick(View view) {
 //                        onItemClickListener.onBookButtonClick(spotList.get(getAdapterPosition()),getAdapterPosition());
-                        onItemClickListener.onMyBookButtonClick(paringSpotList.get(getAdapterPosition()),getAdapterPosition());
+                        onItemClickListener.onMyBookButtonClick(paringSpotList.get(getAdapterPosition()), getAdapterPosition());
                     }
                 });
                 imgInformation.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +146,7 @@ public class SearchSpotAdapter extends RecyclerView.Adapter<SearchSpotAdapter.Se
         public void onClick(View view) {
             if (view.getId() == R.id.btnBook) {
 //                onItemClickListener.onDetailsButtonClick(spotList.get(getAdapterPosition()),getAdapterPosition());
-                onItemClickListener.onMyBookButtonClick(paringSpotList.get(getAdapterPosition()),getAdapterPosition());
+                onItemClickListener.onMyBookButtonClick(paringSpotList.get(getAdapterPosition()), getAdapterPosition());
             }
         }
        /* public void bind(Spot spot) {
@@ -156,21 +170,87 @@ public class SearchSpotAdapter extends RecyclerView.Adapter<SearchSpotAdapter.Se
             //hourlyChargeTextView.setText("Hourly Charge: $" + spot.getWeeklySlots();
         } */
 
-//        Bind Values with Data
+
+        //        Get Reviews from Database
+        public void getReviews(String id) {
+
+            //        Get Reviews
+            List<Double> reviewsList = new ArrayList<>();
+
+            db.collection("reviews").whereEqualTo("spotId", id).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    System.out.println("Review Data ---> ");
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+
+                        System.out.println("ID === > " + id);
+                        System.out.println(list.toString());
+                        for (DocumentSnapshot d : list) {
+                            Map<String, Object> reviewsData = d.getData();
+
+                            reviewsList.add(Double.parseDouble(reviewsData.get("reviews").toString()));
+                        }
+                        Double reviews = calculateAverageRating(reviewsList);
+                        int users = reviewsList.size();
+                        System.out.println("Reviews Data --> " + reviews + " users" + users);
+
+                        ratingText.setText(reviews.toString());
+                        userText.setText(String.valueOf(users));
+
+
+                    } else {
+                        System.out.println("Document Snapshot is empty");
+                        ratingText.setText("0");
+                        userText.setText("0");
+
+                    }
+                }
+            });
+        }
+
+        //        Calculate Average Ratings
+        public double calculateAverageRating(List<Double> ratings) {
+            if (ratings == null || ratings.isEmpty()) {
+                return 0.0; // Return 0 if the list is empty (to avoid division by zero)
+            }
+
+            // Calculate the sum of all ratings
+            int sum = 0;
+            for (double rating : ratings) {
+                sum += rating;
+            }
+
+            // Calculate the average by dividing the sum by the number of ratings
+            double average = (double) sum / ratings.size();
+
+            return average;
+        }
+
+        //        Bind Values with Data
         public void bind(Map<String, Object> spot) {
+            String spotId = "";
             String spotTitle = "";
             String spotAddress = "";
             List<Map<String, Object>> totalSlots;
             String freeSlots = "";
             String spotImage = "";
             String pricePerHour = "";
+            String reviews = "";
+
 
             for (Map.Entry<String, Object> mySpot :
                     spot.entrySet()) {
                 String key = mySpot.getKey();
                 Object value = mySpot.getValue();
 
+
                 switch (key) {
+                    case "id":
+                        spotId = mySpot.getValue().toString();
+                        getReviews(spotId);
+                        break;
                     case "spotTitle":
                         spotTitle = mySpot.getValue().toString();
                         break;
@@ -192,9 +272,11 @@ public class SearchSpotAdapter extends RecyclerView.Adapter<SearchSpotAdapter.Se
 
                 }
 //                System.out.println("Key: " + key + ", Value: " + value);
-
             }
+
+
             nameTextView.setText(spotTitle);
+//            ratingText.setText(reviews);
             addressTextView.setText(spotAddress);
             txtSpotsLeft.setText(freeSlots + " Spots Left");
             txtPricePerHour.setText("PKR " + pricePerHour + "/hour");
