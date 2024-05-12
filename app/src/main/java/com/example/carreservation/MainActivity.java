@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
                                                     new OnSuccessListener<DocumentSnapshot>() {
                                                         @Override
                                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                            System.out.println("++++++++++++++ UID ++++++++++");
-                                                            System.out.println(documentSnapshot.getData().get("uuid"));
+//                                                            System.out.println("++++++++++++++ UID ++++++++++");
+//                                                            System.out.println(documentSnapshot.getData().get("uuid"));
                                                             String userType = documentSnapshot.getData().get("userType").toString();
                                                             if (userType.equalsIgnoreCase("Customer")) {
                                                                 Toast.makeText(MainActivity.this, "Customer", Toast.LENGTH_SHORT).show();

@@ -31,7 +31,9 @@ import com.example.carreservation.interfaces.SelectBookingListener;
 import com.example.carreservation.models.Booking;
 import com.example.carreservation.models.SelectedSlot;
 import com.example.carreservation.models.Spot;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.Chip;
@@ -48,6 +50,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBookingAdapter.CustomerBookingViewHolder> {
 
@@ -79,7 +82,7 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
             @Override
             public void onClick(View v) {
 
-                listener.onItemClicked(bookings.get(position),position);
+                listener.onItemClicked(bookings.get(position), position);
             }
         });
 
@@ -89,43 +92,52 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        ReviewBottomSheetFragments reviewBottomSheetFragments = new ReviewBottomSheetFragments();
-//                        reviewBottomSheetFragments.show(((AppCompatActivity)mContext).getSupportFragmentManager(), reviewBottomSheetFragments.getTag());
 
-//                        Toast.makeText(mContext,"Hello",Toast.LENGTH_SHORT).show();
-                        Dialog dialog =  new Dialog(mContext);
-                        dialog.setContentView(R.layout.custom_dialog_box);
-                        dialog.show();
+                        if (Objects.equals(bookingViewModel.getBookingStatus(), "Booked")) {
+                            Dialog dialog = new Dialog(mContext);
+                            dialog.setContentView(R.layout.custom_dialog_box);
+                            dialog.show();
 
 //                        Initialize the component
-                        RatingBar ratingBar = dialog.findViewById(R.id.ratingBar);
-                        EditText reviewMsg = dialog.findViewById(R.id.reviewTxt);
-                        Button submitBtn = dialog.findViewById(R.id.submitBtn);
+                            RatingBar ratingBar = dialog.findViewById(R.id.ratingBar);
+                            EditText reviewMsg = dialog.findViewById(R.id.reviewTxt);
+                            Button submitBtn = dialog.findViewById(R.id.submitBtn);
 
-                        submitBtn.setOnClickListener(
-                                new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        float rating = ratingBar.getRating();
-                                        Map<String,Object> reviewsData = new HashMap<String,Object>();
-                                        reviewsData.put("customerId", bookingViewModel.getCustomerId());
-                                        reviewsData.put("spotId", bookingViewModel.getSpotId());
-                                        reviewsData.put("vendorId", bookingViewModel.getVendorId());
-                                        reviewsData.put("reviews", rating);
-                                        reviewsData.put("message", reviewMsg.getText().toString());
-                                        FirebaseFirestore.getInstance().collection("reviews").add(reviewsData).addOnSuccessListener(
-                                                new OnSuccessListener<DocumentReference>() {
-                                                    @Override
-                                                    public void onSuccess(DocumentReference documentReference) {
-                                                        Toast.makeText(mContext,"Thanks for Your Review",Toast.LENGTH_SHORT ).show();
-                                                        dialog.dismiss();
+                            submitBtn.setOnClickListener(
+                                    new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            float rating = ratingBar.getRating();
+                                            Map<String, Object> reviewsData = new HashMap<String, Object>();
+                                            reviewsData.put("customerId", bookingViewModel.getCustomerId());
+                                            reviewsData.put("spotId", bookingViewModel.getSpotId());
+                                            reviewsData.put("vendorId", bookingViewModel.getVendorId());
+                                            reviewsData.put("reviews", rating);
+                                            reviewsData.put("message", reviewMsg.getText().toString());
+                                            FirebaseFirestore.getInstance().collection("reviews").add(reviewsData).addOnSuccessListener(
+                                                    new OnSuccessListener<DocumentReference>() {
+
+                                                        @Override
+                                                        public void onSuccess(DocumentReference documentReference) {
+                                                            FirebaseFirestore.getInstance().collection("Bookings")
+                                                                    .document(bookingViewModel.getId())
+                                                                    .update("bookingStatus", "Success").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            Toast.makeText(mContext, "Status Update", Toast.LENGTH_SHORT).show();
+
+                                                                        }
+                                                                    });
+                                                            Toast.makeText(mContext, "Thanks for Your Review", Toast.LENGTH_SHORT).show();
+                                                            dialog.dismiss();
+                                                        }
                                                     }
-                                                }
-                                        );
+                                            );
 //                                        System.out.println(reviewsData);
+                                        }
                                     }
-                                }
-                        );
+                            );
+                        }
 
                     }
                 }
@@ -231,12 +243,15 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
                         Duration timeLeft = Duration.between(currentDateTime, targetDateTime);
                         if (!timeLeft.isNegative()) {
                             txtTimeLeft.setText(formatDuration(timeLeft));
-                        }else{
+                        } else {
                             txtTimeLeft.setText("Time Left: 0 min");
                         }
                         txtArriving.setText("Arriving\n" + selectedDate + " " + time[0]);
                         txtLeaving.setText("Leaving\n" + selectedDate + " " + selectedSlots.get(selectedSlots.size() - 1).getSlotName().split("-")[1]);
                         btnDuration.setText(selectedSlots.size() + " h");
+
+
+
                         if (timeLeft.isNegative()) {
                             btnReview.setVisibility(View.VISIBLE);
                             btnCompeleteOrIngProgres.setText("Completed");
@@ -249,7 +264,10 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
                 } else {
                     txtTimeLeft.setText("");
                 }
+                if (Objects.equals(booking.getBookingStatus(), "Success") || Objects.equals(booking.getBookingStatus(), "Pending")){
+                    btnReview.setVisibility(View.GONE);
 
+                }
                 txtCarRegistration.setText(booking.getVehicleRegistrationNumber());
                 txtTotalPrice.setText("PKR " + booking.getTotalAmount().toString());
 
@@ -266,10 +284,7 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
             }
 
 
-
         }
-
-
 
 
         private static LocalDateTime parseDateTime(String dateStr, String timeStr) {
