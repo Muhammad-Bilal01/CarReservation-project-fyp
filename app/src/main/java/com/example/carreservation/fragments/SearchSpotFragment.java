@@ -269,9 +269,6 @@ public class SearchSpotFragment extends Fragment implements OnItemClickListener 
 //                                ParkingSpots myParkingSpot = d.toObject(ParkingSpots.class);
 //                                myParkingSpot.setId(d.getId());
 
-
-
-
                                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 
 //                                To make if the last date is gone no data will show
