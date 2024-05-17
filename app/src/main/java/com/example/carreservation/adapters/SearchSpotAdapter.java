@@ -1,22 +1,21 @@
 package com.example.carreservation.adapters;
 
 import android.annotation.SuppressLint;
-import android.media.Image;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.carreservation.R;
+import com.example.carreservation.UserReviewActivity;
 import com.example.carreservation.interfaces.OnItemClickListener;
-import com.example.carreservation.models.AvailableSlot;
-import com.example.carreservation.models.Spot;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
@@ -26,7 +25,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -78,6 +76,7 @@ public class SearchSpotAdapter extends RecyclerView.Adapter<SearchSpotAdapter.Se
 
     public class SearchSpotViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView nameTextView;
+        private TextView reviewTextView;
         private TextView ratingText;
         private TextView userText;
         private TextView addressTextView;
@@ -88,6 +87,8 @@ public class SearchSpotAdapter extends RecyclerView.Adapter<SearchSpotAdapter.Se
         private MaterialButton btnBook;
         private MaterialCardView materialCardView;
 
+            private String globalSpotId;
+
         //        Firebase
         private final FirebaseFirestore db = FirebaseFirestore.getInstance();
         ;
@@ -96,6 +97,7 @@ public class SearchSpotAdapter extends RecyclerView.Adapter<SearchSpotAdapter.Se
         public SearchSpotViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.txt_spot_name);
+            reviewTextView = itemView.findViewById(R.id.review_txt);
             ratingText = itemView.findViewById(R.id.rating_txt);
             userText = itemView.findViewById(R.id.noOfUser_txt);
             addressTextView = itemView.findViewById(R.id.txt_spot_address);
@@ -115,6 +117,18 @@ public class SearchSpotAdapter extends RecyclerView.Adapter<SearchSpotAdapter.Se
 //                        onItemClickListener.onBookButtonClick(spotList.get(getAdapterPosition()),getAdapterPosition());
                         System.out.println("Clicked...");
                         onItemClickListener.onMyBookButtonClick(paringSpotList.get(getAdapterPosition()), getAdapterPosition());
+                    }
+                });
+
+                reviewTextView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(reviewTextView.getContext(), "Review", Toast.LENGTH_SHORT).show();
+                        System.out.println("GLOBAL ID ==== "+ globalSpotId);
+                        Intent intent = new Intent(reviewTextView.getContext(), UserReviewActivity.class);
+                        intent.putExtra("spotId", globalSpotId);
+                        reviewTextView.getContext().startActivity(intent);
+
                     }
                 });
 
@@ -249,6 +263,9 @@ public class SearchSpotAdapter extends RecyclerView.Adapter<SearchSpotAdapter.Se
                 switch (key) {
                     case "id":
                         spotId = mySpot.getValue().toString();
+
+                        globalSpotId = spotId;
+                        System.out.println("ID ===> " + globalSpotId);
                         getReviews(spotId);
                         break;
                     case "spotTitle":

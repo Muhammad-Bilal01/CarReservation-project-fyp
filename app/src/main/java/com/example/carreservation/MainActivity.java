@@ -72,7 +72,10 @@ public class MainActivity extends AppCompatActivity {
                                                                 Intent intent = new Intent(MainActivity.this, UserDashboardActivity.class);
                                                                 startActivity(intent);
                                                                 finish();
-                                                            } else {
+                                                            }else if (userType.equalsIgnoreCase("Admin")){
+                                                                Toast.makeText(MainActivity.this, "Admin", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                            else {
                                                                 Toast.makeText(MainActivity.this, "Vendor", Toast.LENGTH_SHORT).show();
                                                                 Intent intent = new Intent(MainActivity.this, VendorDrawerActivity.class);
                                                                 startActivity(intent);

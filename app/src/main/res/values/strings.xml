@@ -52,7 +52,7 @@
     <string name="identity_number">Identity Number</string>
     <string name="payment_methods">Payment Methods</string>
 
-<!--    Drop Down Menu Items -->
+    <!--    Drop Down Menu Items -->
     <string-array name="spots">
         <item>Garden</item>
         <item>Nazimabad</item>

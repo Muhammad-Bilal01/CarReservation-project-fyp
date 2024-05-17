@@ -16,6 +16,9 @@
         android:theme="@style/Theme.CarReservation"
         tools:targetApi="31">
         <activity
+            android:name=".UserReviewActivity"
+            android:exported="false" />
+        <activity
             android:name=".CustomerBookingDetails"
             android:exported="false" />
         <activity
@@ -27,7 +30,6 @@
         <activity
             android:name=".EditUserProfileActivity"
             android:exported="false" />
-
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -91,9 +93,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-    <!--     Firebase Notification -->
+        </activity> <!-- Firebase Notification -->
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">
