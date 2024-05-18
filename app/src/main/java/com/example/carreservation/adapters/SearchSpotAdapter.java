@@ -91,7 +91,7 @@ public class SearchSpotAdapter extends RecyclerView.Adapter<SearchSpotAdapter.Se
 
         //        Firebase
         private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-        ;
+
 
 
         public SearchSpotViewHolder(@NonNull View itemView) {

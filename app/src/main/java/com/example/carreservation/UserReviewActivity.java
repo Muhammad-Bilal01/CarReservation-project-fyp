@@ -53,7 +53,7 @@ public class UserReviewActivity extends AppCompatActivity {
 //                        System.out.println("Docs --> " + d);
                         Map<String, Object> reviews = d.getData();
                         System.out.println("reviews --> " + reviews.get("reviews"));
-                        reviewsArrayList.add(new Reviews(  reviews.get("reviews").toString(), reviews.get("message").toString()));
+                        reviewsArrayList.add(new Reviews(  reviews.get("reviews").toString(), reviews.get("message").toString(), reviews.get("customerName").toString()) );
 
 
                     }

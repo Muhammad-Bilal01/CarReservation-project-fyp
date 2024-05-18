@@ -71,37 +71,101 @@
                 android:textSize="13sp" />
 
 
-                        <ImageView
-                            android:id="@+id/img_car"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_below="@id/txt_spot_address"
-                            android:layout_alignBottom="@id/card_img"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginTop="30dp"
-                            android:layout_marginBottom="5dp"
-                            android:layout_toEndOf="@id/card_img"
-                            android:src="@drawable/ic_car_parking"
-                            android:visibility="visible"></ImageView>
 
-                        <ImageView
-                            android:id="@+id/img_bike"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_below="@id/txt_spot_address"
-                            android:layout_alignBottom="@id/card_img"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginTop="30dp"
-                            android:layout_marginBottom="5dp"
-                            android:layout_toEndOf="@id/img_car"
-                            android:src="@drawable/ic_car_parking"
-                            android:visibility="visible"></ImageView>
+            <ImageView
+                android:id="@+id/img_rating"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_below="@id/txt_spot_address"
+                android:layout_marginTop="35dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toEndOf="@id/card_img"
+                android:src="@drawable/star"></ImageView>
+
+            <TextView
+                android:id="@+id/rating_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_spot_address"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="33dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toEndOf="@id/img_rating"
+                android:text="4.7"
+                android:textStyle="bold"
+                />
+
+            <ImageView
+                android:id="@+id/img_no_user"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_below="@id/txt_spot_address"
+                android:layout_marginTop="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toEndOf="@id/rating_txt"
+                android:src="@drawable/ic_user"
+                ></ImageView>
+
+            <TextView
+                android:id="@+id/noOfUser_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_spot_address"
+                android:layout_toEndOf="@id/img_no_user"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="33dp"
+                android:layout_marginBottom="5dp"
+                android:text="4"
+                android:textStyle="bold"
+                />
+
+
+<!--            <ImageView-->
+<!--                            android:id="@+id/img_car"-->
+<!--                            android:layout_width="35dp"-->
+<!--                            android:layout_height="35dp"-->
+<!--                            android:layout_below="@id/txt_spot_address"-->
+<!--                            android:layout_alignBottom="@id/card_img"-->
+<!--                            android:layout_marginLeft="5dp"-->
+<!--                            android:layout_marginTop="30dp"-->
+<!--                            android:layout_marginBottom="5dp"-->
+<!--                            android:layout_toEndOf="@id/card_img"-->
+<!--                            android:src="@drawable/ic_car_parking"-->
+<!--                            android:visibility="visible"></ImageView>-->
+
+<!--                        <ImageView-->
+<!--                            android:id="@+id/img_bike"-->
+<!--                            android:layout_width="35dp"-->
+<!--                            android:layout_height="35dp"-->
+<!--                            android:layout_below="@id/txt_spot_address"-->
+<!--                            android:layout_alignBottom="@id/card_img"-->
+<!--                            android:layout_marginLeft="5dp"-->
+<!--                            android:layout_marginTop="30dp"-->
+<!--                            android:layout_marginBottom="5dp"-->
+<!--                            android:layout_toEndOf="@id/img_car"-->
+<!--                            android:src="@drawable/ic_car_parking"-->
+<!--                            android:visibility="visible"></ImageView>-->
+
+            <TextView
+                android:id="@+id/review_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/noOfUser_txt"
+                android:layout_marginLeft="5dp"
+                android:layout_toEndOf="@id/card_img"
+                android:text="Reviews"
+                android:textColor="@color/theme_color"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
-                android:layout_alignBottom="@id/img_bike"
+                android:layout_alignBottom="@id/review_txt"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="15dp"

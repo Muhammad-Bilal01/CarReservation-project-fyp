@@ -131,6 +131,7 @@ public class VendorAllSpotsFragment extends Fragment implements OnItemClickListe
 //                                spot.setId(d.getId());
 
                                 Map<String, Object> spot = d.getData();
+                                System.out.println("SPot Id ===> "+ d.getId());
                                 spot.put("id", d.getId());
 
                                 // and we will pass this object class

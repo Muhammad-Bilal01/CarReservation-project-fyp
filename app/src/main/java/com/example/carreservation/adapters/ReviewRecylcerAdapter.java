@@ -38,6 +38,7 @@ public class ReviewRecylcerAdapter extends RecyclerView.Adapter<ReviewRecylcerAd
         Reviews review = reviewsArrayList.get(position);
         holder.rating.setText(review.getRating());
         holder.review.setText(review.getMessage());
+        holder.username.setText(review.getUsername());
     }
 
     @Override
@@ -48,8 +49,10 @@ public class ReviewRecylcerAdapter extends RecyclerView.Adapter<ReviewRecylcerAd
     public class RecyclerViewSpotHolder extends RecyclerView.ViewHolder {
         TextView review;
         TextView rating;
+        TextView username;
         public RecyclerViewSpotHolder(@NonNull View itemView) {
             super(itemView);
+            username = itemView.findViewById(R.id.username_text);
             rating = itemView.findViewById(R.id.rating_text);
             review = itemView.findViewById(R.id.review_text);
         }

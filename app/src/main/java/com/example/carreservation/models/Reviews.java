@@ -4,9 +4,20 @@ public class Reviews {
     String rating;
     String message;
 
-    public Reviews(String rating, String message) {
+    String username;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Reviews(String rating, String message, String username) {
         this.rating = rating;
         this.message = message;
+        this.username = username;
     }
 
     public String getRating() {
@@ -30,6 +41,7 @@ public class Reviews {
         return "Reviews{" +
                 "rating=" + rating +
                 ", message='" + message + '\'' +
+                ", username='" + username + '\'' +
                 '}';
     }
 }

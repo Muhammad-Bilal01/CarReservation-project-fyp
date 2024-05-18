@@ -110,6 +110,7 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
                                             float rating = ratingBar.getRating();
                                             Map<String, Object> reviewsData = new HashMap<String, Object>();
                                             reviewsData.put("customerId", bookingViewModel.getCustomerId());
+                                            reviewsData.put("customerName",bookingViewModel.getCustomerName());
                                             reviewsData.put("spotId", bookingViewModel.getSpotId());
                                             reviewsData.put("vendorId", bookingViewModel.getVendorId());
                                             reviewsData.put("reviews", rating);
