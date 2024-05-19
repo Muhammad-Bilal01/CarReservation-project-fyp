@@ -22,6 +22,8 @@ import com.example.carreservation.fragments.UserProfileFragments;
 import com.example.carreservation.fragments.VendorBookingsFragment;
 import com.example.carreservation.fragments.VendorDashboardFragment;
 import com.example.carreservation.fragments.ViewSpotsFragment;
+import com.example.carreservation.helper.FirebaseUtils;
+import com.example.carreservation.models.ChatRoomModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -40,6 +42,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.carreservation.databinding.ActivityVendorDrawerBinding;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -49,6 +52,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.util.Arrays;
 import java.util.Map;
 
 public class UserDashboardActivity extends AppCompatActivity implements BottomNavigationView
@@ -63,9 +67,16 @@ public class UserDashboardActivity extends AppCompatActivity implements BottomNa
 
     private ImageView img_user_profile;
 
+    String chatRoomId;
+    ChatRoomModel chatRoomModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String currentUserId = FirebaseUtils.currentUserId();
+//        get admin and currnet userId
+        chatRoomId = FirebaseUtils.getChatRoomId( currentUserId ,"EuOP9PZ32jUlPgQ3aRhFKtu0ce32");
 
         binding = ActivityUserDashboardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -108,6 +119,8 @@ public class UserDashboardActivity extends AppCompatActivity implements BottomNa
             @Override
             public void onClick(View view) {
                 handleDrawer();
+
+                getChatRoomModel();
 
                 Intent intent = new Intent(UserDashboardActivity.this, SupportChatActivity.class);
                 startActivity(intent);
@@ -226,4 +239,24 @@ public class UserDashboardActivity extends AppCompatActivity implements BottomNa
         }
         return false;
     }
+
+    void getChatRoomModel(){
+        FirebaseUtils.getChatRoomRefernce(chatRoomId).get().addOnCompleteListener( task -> {
+            if(task.isSuccessful()){
+                chatRoomModel = task.getResult().toObject(ChatRoomModel.class);
+                if (chatRoomModel == null){
+                    // First time chat
+                    chatRoomModel = new ChatRoomModel(
+                            chatRoomId,
+                            Arrays.asList(FirebaseUtils.currentUserId(),"EuOP9PZ32jUlPgQ3aRhFKtu0ce32"),
+                            Timestamp.now(),
+                            ""
+                    );
+                    FirebaseUtils.getChatRoomRefernce(chatRoomId).set(chatRoomModel);
+                }
+            }
+        });
+    }
+
+
 }

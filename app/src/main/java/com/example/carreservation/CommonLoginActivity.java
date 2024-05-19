@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.carreservation.admin.AdminDashboardActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -27,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.auth.User;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class CommonLoginActivity extends AppCompatActivity {
 
@@ -63,13 +65,14 @@ public class CommonLoginActivity extends AppCompatActivity {
                 boolean isValid = verifyInformation();
 
 
-                if (isValid)
-                {
+                if (isValid) {
                     String email = emailET.getText().toString();
                     String password = passwordET.getText().toString();
-                    if(email.equalsIgnoreCase("admin@admin.com") && password.equalsIgnoreCase("admin123")){
-                        Toast.makeText(getApplicationContext(),"Admin Login", Toast.LENGTH_SHORT).show();
-                    }else{
+                    if (email.equalsIgnoreCase("admin@admin.com") && password.equalsIgnoreCase("admin123")) {
+                            Intent intent = new Intent(CommonLoginActivity.this, AdminDashboardActivity.class);
+                            startActivity(intent);
+                        Toast.makeText(getApplicationContext(), "Admin Login", Toast.LENGTH_SHORT).show();
+                    } else {
                         progressDialog.setMessage("Verifying User");
                         progressDialog.setCancelable(false);
                         progressDialog.show();
@@ -92,11 +95,9 @@ public class CommonLoginActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
 
                         FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null)
-                        {
+                        if (user != null) {
 
-                            if (user.isEmailVerified())
-                            {
+                            if (user.isEmailVerified()) {
 //                                if(FirebaseFirestore.getInstance().collection("Users").whereEqualTo("userType", "Customer").get().isSuccessful()){
 //                                    startActivity(new Intent(CommonLoginActivity.this, UserDashboardActivity.class));
 //                                    Toast.makeText(CommonLoginActivity.this, "Logged In Successfully(Customer)", Toast.LENGTH_SHORT).show();
@@ -107,18 +108,40 @@ public class CommonLoginActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                                        String usertype=documentSnapshot.getData().get("userType").toString();
-                                        if(usertype.equals("Customer")){
+                                        //        // Notification System
+                                        FirebaseMessaging.getInstance().getToken()
+                                                .addOnCompleteListener(new OnCompleteListener<String>() {
+                                                                           @Override
+                                                                           public void onComplete(@NonNull Task<String> task) {
+                                                                               if (!task.isSuccessful()) {
+                                                                                   System.out.println("Fetching FCM registration token failed" + task.getException());
+                                                                                   return;
+                                                                               }
+
+//                                                                              Get new FCM registration token
+                                                                               String token = task.getResult();
+                                                                               dataref.update("FCM_Token",token).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                   @Override
+                                                                                   public void onSuccess(Void unused) {
+                                                                                       Toast.makeText(CommonLoginActivity.this, "FCM Token updated", Toast.LENGTH_SHORT).show();
+                                                                                   }
+                                                                               });
+
+                                                                           }
+                                                                       }
+                                                );
+
+
+                                        String usertype = documentSnapshot.getData().get("userType").toString();
+                                        if (usertype.equals("Customer")) {
                                             startActivity(new Intent(CommonLoginActivity.this, UserDashboardActivity.class));
                                             Toast.makeText(CommonLoginActivity.this, "Logged In Successfully(Customer)", Toast.LENGTH_SHORT).show();
                                             finish();
-                                        }
-                                        else if(usertype.equals("Admin")){
+                                        } else if (usertype.equals("Admin")) {
 //                                            startActivity(new Intent(CommonLoginActivity.this, UserDashboardActivity.class));
                                             Toast.makeText(CommonLoginActivity.this, "Admin", Toast.LENGTH_SHORT).show();
                                             finish();
-                                        }
-                                        else if(usertype.equals("Vendor")){
+                                        } else if (usertype.equals("Vendor")) {
                                             startActivity(new Intent(CommonLoginActivity.this, VendorDrawerActivity.class));
                                             Toast.makeText(CommonLoginActivity.this, "Logged In Successfully(Vendor)", Toast.LENGTH_SHORT).show();
                                             finish();
@@ -128,11 +151,11 @@ public class CommonLoginActivity extends AppCompatActivity {
                                 dataref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        if(task.isSuccessful()){
+                                        if (task.isSuccessful()) {
                                             DocumentSnapshot doc = task.getResult();
-                                            if(doc.exists()){
+                                            if (doc.exists()) {
                                                 Log.d("Document", doc.getData().toString());
-                                            }else{
+                                            } else {
                                                 Log.d("Document", "NO Data");
 
                                             }
@@ -143,15 +166,11 @@ public class CommonLoginActivity extends AppCompatActivity {
 //                                            Toast.makeText(CommonLoginActivity.this, "Logged In Successfully(Vendor)", Toast.LENGTH_SHORT).show();
 
 
-                            }
-                            else
-                            {
+                            } else {
                                 Toast.makeText(this, "Verify Email In Order To Use App", Toast.LENGTH_SHORT).show();
                             }
                         }
-                    }
-                    else
-                    {
+                    } else {
                         Toast.makeText(this, "Invalid Username Or Password", Toast.LENGTH_SHORT).show();
                     }
 
@@ -166,24 +185,18 @@ public class CommonLoginActivity extends AppCompatActivity {
         String email = emailET.getText().toString();
         String password = passwordET.getText().toString();
 
-        if (email.isEmpty())
-        {
+        if (email.isEmpty()) {
             flag = false;
             emailET.setError("Required");
-        }
-        else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
-        {
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             flag = false;
             emailET.setError("Invalid Email");
         }
 
-        if (password.isEmpty())
-        {
+        if (password.isEmpty()) {
             flag = false;
             passwordET.setError("Required");
-        }
-        else if (password.length() < 7)
-        {
+        } else if (password.length() < 7) {
             flag = false;
             Toast.makeText(this, "Invalid Email Or Password", Toast.LENGTH_SHORT).show();
         }

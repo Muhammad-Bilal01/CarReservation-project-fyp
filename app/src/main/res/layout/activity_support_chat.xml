@@ -39,6 +39,7 @@
 
     <!--    Recycler View -->
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
@@ -70,12 +71,11 @@
             android:id="@+id/send_btn"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/icon_send"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:padding="8dp"
             android:layout_marginStart="10dp"
-            />
+            android:padding="8dp"
+            android:src="@drawable/icon_send" />
 
     </RelativeLayout>
     

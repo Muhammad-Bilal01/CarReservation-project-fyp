@@ -13,4 +13,9 @@
     <color name="payment_method_background_color">#545454</color>
     <color name="lightGrey">#8c8b89</color>
     <color name="duskYellow">#fcba03</color>
+    
+    <color name="chat_color_sender">#004AAD</color>
+<!--    <color name="chat_color_reciever">#1E88E5</color>-->
+    <color name="chat_color_reciever">#7CB342</color>
+
 </resources>
