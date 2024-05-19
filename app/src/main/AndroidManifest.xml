@@ -4,6 +4,11 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.POST_NOTIFICATIONS"
+        tools:node="remove" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +21,9 @@
         android:theme="@style/Theme.CarReservation"
         tools:targetApi="31">
         <activity
+            android:name=".admin.SupportChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".UserReviewActivity"
             android:exported="false" />
         <activity
@@ -24,9 +32,9 @@
         <activity
             android:name=".EditVendorProfileActivity"
             android:exported="false" />
-        <activity
-            android:name=".CommonRegistrationActivity2$EditVendorProfileActivity"
-            android:exported="false" />
+        <!--        <activity-->
+        <!--            android:name=".CommonRegistrationActivity2$EditVendorProfileActivity"-->
+        <!--            android:exported="false" />-->
         <activity
             android:name=".EditUserProfileActivity"
             android:exported="false" />
@@ -93,7 +101,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Firebase Notification -->
+        </activity>
+        <!-- Firebase Notification -->
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">

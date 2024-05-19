@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.carreservation.admin.SupportChatActivity;
 import com.example.carreservation.databinding.ActivityUserDashboardBinding;
 import com.example.carreservation.fragments.AddSpotFragment;
 import com.example.carreservation.fragments.CustomerBookingsFragment;
@@ -107,6 +108,10 @@ public class UserDashboardActivity extends AppCompatActivity implements BottomNa
             @Override
             public void onClick(View view) {
                 handleDrawer();
+
+                Intent intent = new Intent(UserDashboardActivity.this, SupportChatActivity.class);
+                startActivity(intent);
+
                /* getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.flFragment, new AddSpotFragment())

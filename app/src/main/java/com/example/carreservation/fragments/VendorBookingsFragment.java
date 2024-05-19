@@ -25,6 +25,7 @@ import com.example.carreservation.UserDashboardActivity;
 import com.example.carreservation.VendorDrawerActivity;
 import com.example.carreservation.adapters.CustomerBookingAdapter;
 import com.example.carreservation.adapters.VendorBookingAdapter;
+import com.example.carreservation.helper.FCMHelper;
 import com.example.carreservation.interfaces.VendorBookingListner;
 import com.example.carreservation.models.Booking;
 import com.example.carreservation.models.Spot;
@@ -269,9 +270,11 @@ public class VendorBookingsFragment extends Fragment implements VendorBookingLis
         db.collection("Bookings").document(documentId).set(model).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                sendNotification("Your booking has been approved",model);
+//                sendNotification("Your booking has been approved",model);
 
-//                Toast.makeText(getActivity(), "Update Status ", Toast.LENGTH_SHORT).show();
+                FCMHelper.sendNotification(model.getUserFCMToken(),"Car Reservation","Your booking has been approved");
+
+                Toast.makeText(getActivity(), "Update Status ", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -286,8 +289,7 @@ public class VendorBookingsFragment extends Fragment implements VendorBookingLis
 //        current username, message,current userid, otherusertoken
 
         String currentUser = model.getVendorId();
-        String otherUserToken = "cBAdrTcRQOWVb5Oynn5B_M:APA91bF-E7FwVHhAaQYxKqrGXghjzVgm4wigjJL9awUKPz-sIGqx7sbOdeJhSe9n7AYXjCCwxEpyusA3lGLUaNC7r8k--4DklEvWXCFUpHbQsD0SK3radV-VB33l4gpprhVRmRBbLyBO";
-
+        String otherUserToken = "AAAAZU_yI24:APA91bGcSMxFm_ysrdLVqfv5nh3WIiSKK4sbdI_lqqELM7_GKjyNPwRmtzeykF6r8hBzfD4ENBy_konBVGZqYTiJjUlcziipsRx5BFBIJ_AE2Qqmstk9913RA0hmuBqvhO0ej3gd90t5";
 
         try {
             JSONObject jsonObject = new JSONObject();
