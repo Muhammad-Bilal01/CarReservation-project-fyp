@@ -5,25 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.carreservation.R;
 import com.example.carreservation.adapters.ChatMessageRecyclerAdapter;
-import com.example.carreservation.adapters.ChatUserRecyclerAdapter;
 import com.example.carreservation.helper.FirebaseUtils;
 import com.example.carreservation.models.ChatMessageModel;
 import com.example.carreservation.models.ChatRoomModel;
-import com.example.carreservation.models.Reviews;
+import com.example.carreservation.models.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Firebase;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -31,18 +27,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.google.firebase.Timestamp;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-public class SupportChatActivity extends AppCompatActivity {
+public class AdminChatActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private EditText message_editText;
@@ -54,20 +47,36 @@ public class SupportChatActivity extends AppCompatActivity {
     ChatRoomModel chatRoomModel;
 
     ChatMessageRecyclerAdapter adapter;
+
     private ArrayList<ChatMessageModel> chatsArrayList;
+
+    UserModel otherUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_support_chat);
+        setContentView(R.layout.activity_admin_chat);
 
+         otherUser = new UserModel();
+
+        Intent intent = getIntent();
+
+        String uuid = intent.getStringExtra("uuid");
+        String name = intent.getStringExtra("name");
+        String profile = intent.getStringExtra("profile");
+
+        System.out.println("UUID --> "+ uuid);
+
+        otherUser.setUserId(uuid);
+        otherUser.setUserName(name);
+        otherUser.setProfileUrl(profile);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         String currentUserId = FirebaseUtils.currentUserId();
-//        get admin and currnet userId
-//        TODO: ADMIN ID
-        chatRoomId = FirebaseUtils.getChatRoomId(currentUserId, "EuOP9PZ32jUlPgQ3aRhFKtu0ce32");
+
+        chatRoomId = FirebaseUtils.getChatRoomId(currentUserId,otherUser.getUserId());
         chatsArrayList = new ArrayList<>();
 
         backBtn = findViewById(R.id.back_btn);
@@ -76,7 +85,6 @@ public class SupportChatActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerview);
 
         getChatRoomModel();
-
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,7 +206,7 @@ public class SupportChatActivity extends AppCompatActivity {
                     // First time chat
                     chatRoomModel = new ChatRoomModel(
                             chatRoomId,
-                            Arrays.asList(FirebaseUtils.currentUserId(), "EuOP9PZ32jUlPgQ3aRhFKtu0ce32"),
+                            Arrays.asList(FirebaseUtils.currentUserId(), otherUser.getUserId()),
                             Timestamp.now(),
                             ""
                     );
@@ -207,5 +215,6 @@ public class SupportChatActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }

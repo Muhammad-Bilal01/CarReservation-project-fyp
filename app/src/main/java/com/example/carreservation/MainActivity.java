@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.carreservation.admin.AdminDashboardActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -82,7 +83,10 @@ public class MainActivity extends AppCompatActivity {
                                                                                        startActivity(intent);
                                                                                        finish();
                                                                                    } else if (userType.equalsIgnoreCase("Admin")) {
+
                                                                                        Toast.makeText(MainActivity.this, "Admin", Toast.LENGTH_SHORT).show();
+                                                                                       Intent intent = new Intent(MainActivity.this, AdminDashboardActivity.class);
+                                                                                       startActivity(intent);
                                                                                    } else {
                                                                                        Toast.makeText(MainActivity.this, "Vendor", Toast.LENGTH_SHORT).show();
                                                                                        Intent intent = new Intent(MainActivity.this, VendorDrawerActivity.class);

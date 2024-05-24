@@ -18,6 +18,7 @@ import com.example.carreservation.admin.AdminDashboardActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -69,9 +70,20 @@ public class CommonLoginActivity extends AppCompatActivity {
                     String email = emailET.getText().toString();
                     String password = passwordET.getText().toString();
                     if (email.equalsIgnoreCase("admin@admin.com") && password.equalsIgnoreCase("admin123")) {
-                            Intent intent = new Intent(CommonLoginActivity.this, AdminDashboardActivity.class);
-                            startActivity(intent);
-                        Toast.makeText(getApplicationContext(), "Admin Login", Toast.LENGTH_SHORT).show();
+
+//                        Login Admin
+                        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+                        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                Intent intent = new Intent(CommonLoginActivity.this, AdminDashboardActivity.class);
+                                startActivity(intent);
+                                Toast.makeText(getApplicationContext(), "Admin Login", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+
                     } else {
                         progressDialog.setMessage("Verifying User");
                         progressDialog.setCancelable(false);

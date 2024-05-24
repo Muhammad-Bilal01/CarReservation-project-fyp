@@ -16,6 +16,8 @@ String userId;
         this.userId = userId;
     }
 
+    public UserModel() {
+     }
     public UserModel(String userName, String profileUrl, String userId) {
         this.userName = userName;
         this.profileUrl = profileUrl;
