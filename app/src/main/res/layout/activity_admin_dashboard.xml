@@ -27,6 +27,18 @@
             android:textStyle="bold"
 
             />
+
+        <ImageView
+            android:id="@+id/logout_btn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_logout_white"
+
+            />
+
     </RelativeLayout>
 
     <!--    Recycler View -->

@@ -58,10 +58,14 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
     private SelectBookingListener listener;
     private Context mContext;
 
+    private boolean isReview = false;
+
+
     public CustomerBookingAdapter(Context context, List<Booking> bookings, SelectBookingListener listener) {
         this.mContext = context;
         this.bookings = bookings;
         this.listener = listener;
+
     }
 
     @NonNull
@@ -110,7 +114,7 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
                                             float rating = ratingBar.getRating();
                                             Map<String, Object> reviewsData = new HashMap<String, Object>();
                                             reviewsData.put("customerId", bookingViewModel.getCustomerId());
-                                            reviewsData.put("customerName",bookingViewModel.getCustomerName());
+                                            reviewsData.put("customerName", bookingViewModel.getCustomerName());
                                             reviewsData.put("spotId", bookingViewModel.getSpotId());
                                             reviewsData.put("vendorId", bookingViewModel.getVendorId());
                                             reviewsData.put("reviews", rating);
@@ -125,6 +129,8 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
                                                                     .update("bookingStatus", "Success").addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<Void> task) {
+                                                                            setIsReview(true);
+//                                                                            notifyDataSetChanged();
                                                                             Toast.makeText(mContext, "Status Update", Toast.LENGTH_SHORT).show();
 
                                                                         }
@@ -143,11 +149,21 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
                     }
                 }
         );
+
+        if (isReview) {
+            holder.btnReview.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
     public int getItemCount() {
         return bookings.size();
+    }
+
+    public void setIsReview(boolean isReview) {
+        this.isReview = isReview;
+        notifyDataSetChanged();
     }
 
     public static class CustomerBookingViewHolder extends RecyclerView.ViewHolder {
@@ -252,10 +268,12 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
                         btnDuration.setText(selectedSlots.size() + " h");
 
 
-
                         if (timeLeft.isNegative()) {
+
                             btnReview.setVisibility(View.VISIBLE);
                             btnCompeleteOrIngProgres.setText("Completed");
+
+
                         } else {
                             btnReview.setVisibility(View.GONE);
                             btnCompeleteOrIngProgres.setText("In-Progress");
@@ -265,7 +283,7 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
                 } else {
                     txtTimeLeft.setText("");
                 }
-                if (Objects.equals(booking.getBookingStatus(), "Success") || Objects.equals(booking.getBookingStatus(), "Pending")){
+                if (Objects.equals(booking.getBookingStatus(), "Success") || Objects.equals(booking.getBookingStatus(), "Pending")) {
                     btnReview.setVisibility(View.GONE);
 
                 }

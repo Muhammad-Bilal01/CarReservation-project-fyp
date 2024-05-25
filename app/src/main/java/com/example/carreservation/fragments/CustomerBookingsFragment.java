@@ -150,4 +150,6 @@ public class CustomerBookingsFragment extends Fragment implements SelectBookingL
         startActivity(intent);
 
     }
+
+
 }

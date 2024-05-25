@@ -233,6 +233,9 @@ public class ViewSpotDetailsFragment extends Fragment {
                         case "VendorID":
                             spot.setVendorId(value.toString());
                             break;
+                        case "VendorToken":
+                            spot.setVendorToken(value.toString());
+                            break;
                         case "PricePerHalfMinute":
                             spot.setPricePerHour(value.toString());
                             txtSpotCharges.setText("PKR " + value.toString());
@@ -345,6 +348,7 @@ public class ViewSpotDetailsFragment extends Fragment {
                     bookingViewModel.setSpotAddress(spot.getSpotAddress());
                     bookingViewModel.setSelectedSlots(slots);
                     bookingViewModel.setVendorId(spot.getVendorId());
+                    bookingViewModel.setVendorToken(spot.getVendorToken());
                     bookingViewModel.setSpotId(spot.getId());
                     bookingViewModel.setSpotImages(spot.getSpotImages());
                     getActivity().getSupportFragmentManager().beginTransaction().addToBackStack("").replace(R.id.flFragment,

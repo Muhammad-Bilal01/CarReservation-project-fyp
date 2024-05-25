@@ -10,6 +10,7 @@ public class Booking {
     private String bookingStatus;
 
     private String userFCMToken;
+
     public String getBookingStatus() {
         return bookingStatus;
     }
@@ -24,12 +25,22 @@ public class Booking {
     private Double totalAmount;
     private String paymentMode;
     private String vendorId;
+
+    private String vendorToken;
     private String spotId;
     private List<SelectedSlot> selectedSlots;
     private String customerId; // New field added
 
     public String getId() {
         return id;
+    }
+
+    public String getVendorToken() {
+        return vendorToken;
+    }
+
+    public void setVendorToken(String vendorToken) {
+        this.vendorToken = vendorToken;
     }
 
     public void setId(String id) {
@@ -67,7 +78,6 @@ public class Booking {
     private boolean isBookingCompleted;
 
 
-
     public String getUserFCMToken() {
         return userFCMToken;
     }
@@ -79,11 +89,26 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(String id, String spotName, String spotAddress,
-                   String bookingStatus,
-                   String vehicleRegistrationNumber, String paymentScreenShotUrl,
-                   String selectedDate, Double totalAmount, String paymentMode, String vendorId, String spotId,
-                   List<SelectedSlot> selectedSlots, String customerId, boolean isBookingCompleted, String customerName,String userFCMToken, String spotImages) {
+    public Booking(
+            String id,
+            String spotName,
+            String spotAddress,
+            String bookingStatus,
+            String vehicleRegistrationNumber,
+            String paymentScreenShotUrl,
+            String selectedDate,
+            Double totalAmount,
+            String paymentMode,
+            String vendorId,
+            String vendorToken,
+            String spotId,
+            List<SelectedSlot> selectedSlots,
+            String customerId,
+            boolean isBookingCompleted,
+            String customerName,
+            String userFCMToken,
+            String spotImages
+    ) {
         this.id = id;
         this.spotName = spotName;
         this.spotAddress = spotAddress;
@@ -94,13 +119,14 @@ public class Booking {
         this.totalAmount = totalAmount;
         this.paymentMode = paymentMode;
         this.vendorId = vendorId;
+        this.vendorToken = vendorToken;
         this.spotId = spotId;
         this.selectedSlots = selectedSlots;
         this.customerId = customerId;
-        this.isBookingCompleted=isBookingCompleted;
-        this.customerName=customerName;
+        this.isBookingCompleted = isBookingCompleted;
+        this.customerName = customerName;
         this.userFCMToken = userFCMToken;
-        this.spotImages=spotImages;
+        this.spotImages = spotImages;
     }
 
     public String getCustomerId() {
@@ -110,6 +136,7 @@ public class Booking {
     public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
+
     public String getSpotName() {
         return spotName;
     }

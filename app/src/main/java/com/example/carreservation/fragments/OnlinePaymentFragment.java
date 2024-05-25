@@ -282,6 +282,7 @@ public class OnlinePaymentFragment extends Fragment {
                         bookingViewModel.getTotalAmount().getValue(),
                         bookingViewModel.getPaymentMode().getValue(),
                         bookingViewModel.getVendorId().getValue(),
+                        bookingViewModel.getVendorToken().getValue(),
                         bookingViewModel.getSpotId().getValue(),
                         bookingViewModel.getSelectedSlots().getValue(),
                         FirebaseAuth.getInstance().getCurrentUser().getUid(),

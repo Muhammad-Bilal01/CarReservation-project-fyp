@@ -5,8 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
+import com.example.carreservation.CommonLoginActivity;
 import com.example.carreservation.R;
 import com.example.carreservation.adapters.ChatUserRecyclerAdapter;
 import com.example.carreservation.helper.FirebaseUtils;
@@ -18,6 +22,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -35,6 +40,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     DatabaseReference ref;
 
     private RecyclerView recyclerView;
+    private ImageView logout_btn;
     ChatUserRecyclerAdapter adapter;
 
     private ArrayList<ChatRoomModel> usersArrayList;
@@ -44,6 +50,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_dashboard);
         recyclerView = findViewById(R.id.recyclerview);
+        logout_btn = findViewById(R.id.logout_btn);
         firebase = FirebaseFirestore.getInstance();
         usersArrayList = new ArrayList<>();
 
@@ -77,6 +84,13 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
 
 
+//        onLogout
+
+        logout_btn.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(this, CommonLoginActivity.class);
+            startActivity(intent);
+        });
 
 
     }

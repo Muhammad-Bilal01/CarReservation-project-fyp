@@ -16,6 +16,7 @@ public class Spot  {
     private double spotLat;
     private double spotLong;
     private String  vendorId;
+    private String  vendorToken;
     private Map<String, List<Slot>> weeklySlots;
     private String fromDate;
     private String toDate;
@@ -49,6 +50,14 @@ public class Spot  {
     private String pricePerHour;
     private String numOfSpot;
 
+    public String getVendorToken() {
+        return vendorToken;
+    }
+
+    public void setVendorToken(String vendorToken) {
+        this.vendorToken = vendorToken;
+    }
+
     public String getId() {
         return id;
     }
@@ -69,15 +78,28 @@ public class Spot  {
         // Default constructor required for Firestore
     }
 
-    public Spot(String id,String spotName, String spotAddress, String spotLocation,
-                double spotLat, double spotLong, String vendorId, Map<String,
-                List<Slot>> weeklySlots, String fromDate, String toDate, String spotImages, String pricePerHour, List<AvailableSlot> availableSlots) {
+    public Spot(String id,
+                String spotName,
+                String spotAddress,
+                String spotLocation,
+                double spotLat,
+                double spotLong,
+                String vendorId,
+                String vendorToken,
+                Map<String, List<Slot>> weeklySlots,
+                String fromDate,
+                String toDate,
+                String spotImages,
+                String pricePerHour,
+                List<AvailableSlot> availableSlots
+    ) {
         this.spotName=spotName;
         this.spotAddress=spotAddress;
         this.spotLocation = spotLocation;
         this.spotLat = spotLat;
         this.spotLong = spotLong;
         this.vendorId = vendorId;
+        this.vendorToken = vendorToken;
         this.weeklySlots = weeklySlots;
         this.fromDate = fromDate;
         this.toDate = toDate;

@@ -2,6 +2,7 @@ package com.example.carreservation.fragments;
 
 import static android.content.ContentValues.TAG;
 
+import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -132,8 +133,11 @@ public class SelectPaymentModeFragment extends Fragment {
     }
 
     private void SaveBookingToDB() {
-
-
+        ProgressDialog progressDialog
+                = new ProgressDialog(getActivity());
+        progressDialog.setTitle("Process");
+        progressDialog.setMessage("Please wait while we are saving your booking.");
+        progressDialog.show();
 
 //        to get current user
         DocumentReference dataref = FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -158,6 +162,7 @@ public class SelectPaymentModeFragment extends Fragment {
                         bookingViewModel.getTotalAmount().getValue(), // amount
                         bookingViewModel.getPaymentMode().getValue(), // payment mode - online/cash
                         bookingViewModel.getVendorId().getValue(), // vendor id
+                        bookingViewModel.getVendorToken().getValue(), // vendor Token
                         bookingViewModel.getSpotId().getValue(), // spot document id
                         bookingViewModel.getSelectedSlots().getValue(), // selected Slot [List<Map>]
                         FirebaseAuth.getInstance().getCurrentUser().getUid(), // Current User
@@ -173,6 +178,7 @@ public class SelectPaymentModeFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
                                 if (task.isSuccessful()) {
+                                    progressDialog.dismiss();
                                     Toast.makeText(getActivity(), "Booking Completed", Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -255,6 +261,11 @@ public class SelectPaymentModeFragment extends Fragment {
                                 Log.w(TAG, "Transaction failure.", e);
                             }
                         });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
             }
         });
 

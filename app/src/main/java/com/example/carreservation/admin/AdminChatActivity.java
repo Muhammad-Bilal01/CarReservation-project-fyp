@@ -76,7 +76,7 @@ public class AdminChatActivity extends AppCompatActivity {
 
         String currentUserId = FirebaseUtils.currentUserId();
 
-        chatRoomId = FirebaseUtils.getChatRoomId(currentUserId,otherUser.getUserId());
+        chatRoomId = FirebaseUtils.getChatRoomId(otherUser.getUserId(),currentUserId);
         chatsArrayList = new ArrayList<>();
 
         backBtn = findViewById(R.id.back_btn);

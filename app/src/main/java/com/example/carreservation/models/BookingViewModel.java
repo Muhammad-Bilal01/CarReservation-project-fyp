@@ -91,6 +91,14 @@ public class BookingViewModel extends ViewModel {
         this.vendorId.setValue(vendorId);
     }
 
+    public MutableLiveData<String> getVendorToken() {
+        return vendorToken;
+    }
+
+    public void setVendorToken(String vendorToken) {
+        this.vendorToken.setValue(vendorToken);
+    }
+
     public MutableLiveData<String> getSpotId() {
         return spotId;
     }
@@ -111,6 +119,7 @@ public class BookingViewModel extends ViewModel {
     private MutableLiveData<Double> totalAmount=new MutableLiveData<>();
     private MutableLiveData<String> paymentMode=new MutableLiveData<>();
     private MutableLiveData<String> vendorId=new MutableLiveData<>();
+    private MutableLiveData<String> vendorToken=new MutableLiveData<>();
     private MutableLiveData<String> spotId=new MutableLiveData<>();
     private MutableLiveData<List<SelectedSlot>> selectedSlots=new MutableLiveData<>();
 

@@ -42,6 +42,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -128,11 +129,27 @@ public class SpotImagesFragment extends Fragment implements  OnItemClickListener
     private LinearLayout sliderDots;
     private Spot spot;
     private boolean IsUpdate = false;
+    final String[] vendorToken = {""};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+//        Generate Vendor Token
+
+
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (task.isSuccessful()){
+                    String token = task.getResult().toString();
+                    vendorToken[0] = token;
+                }else{
+                    System.out.println("ERROR WHILE GENERATING TOKEN" );
+                }
+            }
+        });
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_spot_images, container, false);
@@ -488,10 +505,12 @@ public class SpotImagesFragment extends Fragment implements  OnItemClickListener
     }
 
     private Object timing() {
+
         HashMap<String, Object> data = new HashMap<>();
 
         data.put("id", "");
         data.put("VendorID", spot.getVendorId());
+        data.put("VendorToken", vendorToken[0]);
         data.put("PricePerHalfMinute", spot.getPricePerHour());
         data.put("spotTitle", spot.getSpotName());
         data.put("spotLocation", spot.getSpotLocation());
@@ -607,6 +626,7 @@ public class SpotImagesFragment extends Fragment implements  OnItemClickListener
 //      Reference to the Firestore collection
         CollectionReference dbspots = db.collection("parkingSpots");
         System.out.println("+++++++++++++++++++++++_________________ISUPDATE_________________+++++++++++++++++++++++++++++");
+
         if (IsUpdate) {
             Map<String,Object> data = (Map<String, Object>) timing();
             data.put("id",spot.getId());

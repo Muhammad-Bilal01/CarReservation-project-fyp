@@ -212,7 +212,7 @@
                             android:layout_height="25dp"
                             android:layout_weight=".1"
                             android:layout_marginRight="30dp"
-                            android:src="@drawable/ic_logout"/>
+                            android:src="@drawable/ic_logout_white"/>
                     </LinearLayout>
                 </RelativeLayout>
             </ScrollView>
