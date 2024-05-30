@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.carreservation.adapters.ReviewRecylcerAdapter;
 import com.example.carreservation.models.Reviews;
@@ -23,6 +26,8 @@ import java.util.Map;
 
 public class UserReviewActivity extends AppCompatActivity {
     private ReviewRecylcerAdapter adapter;
+    private ImageView back_btn;
+    private TextView noReviews;
     private ArrayList<Reviews> reviewsArrayList;
     private RecyclerView recyclerView;
 
@@ -33,6 +38,8 @@ public class UserReviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_review);
         recyclerView = findViewById(R.id.review_recylcer);
+        back_btn = findViewById(R.id.back_btn);
+        noReviews = findViewById(R.id.no_reviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         reviewsArrayList = new ArrayList<>();
 
@@ -41,12 +48,21 @@ public class UserReviewActivity extends AppCompatActivity {
 //        System.out.println(" Intent Id ++++" + id);
 
 
+        clickOnBackButton();
+
+        if (reviewsArrayList.isEmpty()){
+            noReviews.setVisibility(View.VISIBLE);
+        }else{
+            noReviews.setVisibility(View.GONE);
+        }
+
 //        Get Data from Firebase
         db = FirebaseFirestore.getInstance();
         db.collection("reviews").whereEqualTo("spotId", id).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 if (!queryDocumentSnapshots.isEmpty()) {
+                    noReviews.setVisibility(View.GONE);
                     List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                     for (DocumentSnapshot d : list) {
 
@@ -66,5 +82,11 @@ public class UserReviewActivity extends AppCompatActivity {
 
         adapter = new ReviewRecylcerAdapter(this, reviewsArrayList);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void clickOnBackButton() {
+        back_btn.setOnClickListener(v -> {
+           onBackPressed();
+        });
     }
 }

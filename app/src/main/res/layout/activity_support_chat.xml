@@ -14,14 +14,15 @@
         android:padding="10dp"
         android:paddingVertical="20dp">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/back_btn"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@color/theme_color"
             android:scaleType="fitCenter"
             android:src="@drawable/back_icon"
-            app:tint="@color/white" />
+            app:tint="@color/white"
+            android:contentDescription="back" />
 
         <TextView
             android:id="@+id/support_chat"

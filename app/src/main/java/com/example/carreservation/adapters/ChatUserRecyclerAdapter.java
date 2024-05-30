@@ -25,8 +25,12 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -71,6 +75,9 @@ public class ChatUserRecyclerAdapter extends RecyclerView.Adapter<ChatUserRecycl
 
 //                holder.usernameText.setText(userModel.getUserName());
                 holder.usernameText.setText(userModel.getUserName());
+                Picasso.get().load(userModel.getProfileUrl()).into(holder.profilePic);
+
+
 
 
 //                onClick Listner
@@ -85,8 +92,25 @@ public class ChatUserRecyclerAdapter extends RecyclerView.Adapter<ChatUserRecycl
             }
         });
 
+        System.out.println("Model--->");
+        System.out.println(model.getLastMessageTimestamp());
+         holder.last_timeStamp.setText(convertDateToString(model.getLastMessageTimestamp().toDate()));
+
+
 
     }
+
+    // Method to convert Date to formatted String
+    public static String convertDateToString(Date date) {
+        // Define the desired date format
+        SimpleDateFormat sdf = new SimpleDateFormat("mm:ss", Locale.getDefault());
+
+        // Return the formatted date as a String
+        return sdf.format(date);
+    }
+
+
+
 
     @Override
     public int getItemCount() {
@@ -96,13 +120,14 @@ public class ChatUserRecyclerAdapter extends RecyclerView.Adapter<ChatUserRecycl
 
     class ChatRoomModelViewholder extends RecyclerView.ViewHolder {
 
-        TextView usernameText;
+        TextView usernameText,last_timeStamp;
         CircleImageView profilePic;
 
         public ChatRoomModelViewholder(@NonNull View itemView) {
             super(itemView);
 
             usernameText = itemView.findViewById(R.id.user_text);
+            last_timeStamp = itemView.findViewById(R.id.last_timestamp);
             profilePic = itemView.findViewById(R.id.profile_pic_image);
 
 

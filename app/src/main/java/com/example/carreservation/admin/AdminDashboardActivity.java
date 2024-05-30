@@ -72,6 +72,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                         System.out.println("model --> " + model);
                         ChatRoomModel chatRoomModel = new ChatRoomModel();
                         chatRoomModel.setUserIds((List<String>) model.get("userIds"));
+                        chatRoomModel.setLastMessageTimestamp((Timestamp) model.get("lastMessageTimestamp"));
                         usersArrayList.add(chatRoomModel);
 
                     }

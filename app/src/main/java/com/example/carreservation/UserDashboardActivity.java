@@ -74,6 +74,7 @@ public class UserDashboardActivity extends AppCompatActivity implements BottomNa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+//        Support Inbox
         String currentUserId = FirebaseUtils.currentUserId();
 //        get admin and currnet userId
         chatRoomId = FirebaseUtils.getChatRoomId( currentUserId ,"EuOP9PZ32jUlPgQ3aRhFKtu0ce32");

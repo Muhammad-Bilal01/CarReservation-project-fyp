@@ -263,12 +263,14 @@ public class ViewSpotDetailsFragment extends Fragment {
                     }
 
                 }
-
+/*
 //                to set image slider dot indicator
                 if (myParkingSpot.getSpotImages().length() > 0) {
                     String[] urls = myParkingSpot.getSpotImages().split("\\|");
                     for (String url :
                             urls) {
+                        System.out.println("Images --->");
+                        System.out.println(url);
                         images.add(url);
 
                         viewPagerAdapter.notifyDataSetChanged();
@@ -288,6 +290,46 @@ public class ViewSpotDetailsFragment extends Fragment {
                         dots[0].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.active_dot));
                     }
                 }
+*/
+
+                // Check if there are any images
+                if (myParkingSpot.getSpotImages().length() > 0) {
+                    // Split the image URLs by the "|" symbol
+                    String[] urls = myParkingSpot.getSpotImages().split("\\|");
+
+                    // Clear the existing images and dots if necessary
+                    images.clear();
+                    sliderDotspanel.removeAllViews();
+
+                    // Add URLs to the images list and set up dots
+                    for (String url : urls) {
+                        System.out.println("Images --->");
+                        System.out.println(url);
+                        images.add(url);
+                    }
+
+                    // Notify the adapter that the data has changed
+                    viewPagerAdapter.notifyDataSetChanged();
+
+                    // Set up the dot indicators
+                    dotscount = viewPagerAdapter.getCount();
+                    dots = new ImageView[dotscount];
+
+                    for (int i = 0; i < dotscount; i++) {
+                        dots[i] = new ImageView(getActivity());
+                        dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.non_active_dot));
+
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        params.setMargins(8, 0, 8, 0);
+                        sliderDotspanel.addView(dots[i], params);
+                    }
+
+                    // Set the first dot to be active
+                    if (dots.length > 0) {
+                        dots[0].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.active_dot));
+                    }
+                }
+
 
                 /*
                 spot = documentSnapshot.toObject(Spot.class);
