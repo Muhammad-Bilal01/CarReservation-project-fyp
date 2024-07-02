@@ -120,7 +120,7 @@ public class ChatUserRecyclerAdapter extends RecyclerView.Adapter<ChatUserRecycl
 
     class ChatRoomModelViewholder extends RecyclerView.ViewHolder {
 
-        TextView usernameText,last_timeStamp;
+        TextView usernameText,last_timeStamp,lastMessage;
         CircleImageView profilePic;
 
         public ChatRoomModelViewholder(@NonNull View itemView) {
@@ -129,6 +129,7 @@ public class ChatUserRecyclerAdapter extends RecyclerView.Adapter<ChatUserRecycl
             usernameText = itemView.findViewById(R.id.user_text);
             last_timeStamp = itemView.findViewById(R.id.last_timestamp);
             profilePic = itemView.findViewById(R.id.profile_pic_image);
+            lastMessage = itemView.findViewById(R.id.last_msg);
 
 
         }
