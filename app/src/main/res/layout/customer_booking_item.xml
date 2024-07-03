@@ -279,6 +279,7 @@
                       android:textColor="@color/white"
                       android:textSize="10sp"
                       android:textStyle="bold" />
+
                   <com.google.android.material.button.MaterialButton
                       android:id="@+id/btnCompleteOrInProgress"
                       android:layout_width="110dp"
@@ -291,7 +292,7 @@
                       android:layout_alignParentEnd="true"
                       android:layout_marginRight="20dp"
                       android:layout_marginBottom="10dp"
-                      android:text="In-Progress">
+                      android:text="Cancel">
 
                   </com.google.android.material.button.MaterialButton>
               </RelativeLayout>

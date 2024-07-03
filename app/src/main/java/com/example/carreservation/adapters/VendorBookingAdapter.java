@@ -15,17 +15,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.carreservation.R;
 import com.example.carreservation.interfaces.OnItemClickListener;
 import com.example.carreservation.interfaces.VendorBookingListner;
 import com.example.carreservation.models.Booking;
+import com.example.carreservation.models.BookingViewModel;
 import com.example.carreservation.models.VendorBooking;
 import com.example.carreservation.models.SelectedSlot;
 import com.example.carreservation.models.Spot;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.time.Duration;
@@ -40,6 +48,9 @@ public class VendorBookingAdapter extends RecyclerView.Adapter<VendorBookingAdap
 
     private List<Booking> bookings;
     private VendorBookingListner vendorBookingListner;
+
+    private String status;
+
     public VendorBookingAdapter(List<Booking> bookings, VendorBookingListner vendorBookingListner) {
         this.bookings = bookings;
         this.vendorBookingListner = vendorBookingListner;
@@ -68,6 +79,7 @@ public class VendorBookingAdapter extends RecyclerView.Adapter<VendorBookingAdap
 
         if (bookingViewModel.getBookingStatus() != null && bookingViewModel.getBookingStatus().equalsIgnoreCase("pending")) {
 //            holder.btnStatus.setText("Check");
+//            if(holder.btnAction.getText().equals("Approve")){
                 holder.btnStatus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -75,11 +87,69 @@ public class VendorBookingAdapter extends RecyclerView.Adapter<VendorBookingAdap
                         holder.btnStatus.setText("Approved");
                     }
                 });
+//        }
         }
 
+        if(bookingViewModel.getBookingStatus() != null && bookingViewModel.getBookingStatus().equalsIgnoreCase("Cancel")){
+            holder.materialCardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.color_red));
+            holder.booking_card.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.color_red));
 
+                holder.btnAction.setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+    //                            System.out.println("CLEAR");
+                                FirebaseFirestore.getInstance().collection("Bookings").document(bookingViewModel.getId()).update("penalty",0.0).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Toast.makeText(holder.itemView.getContext(),"Penalty Clear",Toast.LENGTH_SHORT).show();
+                                        holder.btnAction.setVisibility(View.GONE);
+                                        holder.btnStatus.setVisibility(View.GONE);
+                                        notifyDataSetChanged();
+                                       updateUserPenalty(bookingViewModel.getCustomerId(), bookingViewModel.getPenalty());
+                                    }
+                                });
+                            }
+                        }
+                );
+        }else{
+            holder.materialCardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.spot_card));
+            holder.booking_card.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.spot_card));
 
+        }
     }
+
+    void updateUserPenalty(String customerID,Double bookingPenalty){
+        DocumentReference customerRef  = FirebaseFirestore.getInstance().collection("Users").document(customerID);
+        customerRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    // Check if the penalty field exists and is not null
+                    if (documentSnapshot.contains("penalty") && documentSnapshot.get("penalty") != null) {
+                        // Get the penalty value
+                        double penalty = documentSnapshot.getDouble("penalty"); // Assuming penalty is stored as a double
+                        // Handle the penalty value
+                        System.out.println(penalty);
+                        double remainingPenalty = penalty - bookingPenalty;
+                        customerRef.update("penalty",remainingPenalty).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+//                                TODO: DO SOMETHING
+                            }
+                        });
+                    } else {
+                        // Handle the case where penalty is null or doesn't exist
+//                        handlePenalty(0); // Or any other default value or action
+                        System.out.println("Penalty Not Found");
+                    }
+                } else {
+                    System.out.println("Document Not Found");
+                }
+            }
+        });
+    }
+
 
     @Override
     public int getItemCount() {
@@ -93,7 +163,7 @@ public class VendorBookingAdapter extends RecyclerView.Adapter<VendorBookingAdap
         private ImageView imgInformation,img_spot;
         private MaterialButton btnAction, btnStatus, btnDuration;
         private MaterialCardView materialCardView;
-        private RelativeLayout hideView;
+        private RelativeLayout hideView,booking_card;
 
 
         public VendorBookingViewHolder(@NonNull View itemView) {
@@ -114,6 +184,7 @@ public class VendorBookingAdapter extends RecyclerView.Adapter<VendorBookingAdap
             img_spot=itemView.findViewById(R.id.img_spot);
             materialCardView=itemView.findViewById(R.id.cardView);
             hideView=itemView.findViewById(R.id.hideView);
+            booking_card=itemView.findViewById(R.id.booking_card);
         }
 
 
@@ -146,14 +217,6 @@ public class VendorBookingAdapter extends RecyclerView.Adapter<VendorBookingAdap
                         txtLeaving.setText("Leaving\n"+selectedDate+" "+selectedSlots.get(selectedSlots.size()-1).getSlotName().split("-")[1]);
                         btnDuration.setText(selectedSlots.size()+" h");
 
-
-                        if (booking.getBookingStatus() != null && booking.getBookingStatus().equalsIgnoreCase("pending")) {
-                            btnStatus.setText("Approve");
-                        }else if(booking.getBookingStatus() != null && booking.getBookingStatus().equalsIgnoreCase("Booked")){
-                            btnStatus.setText("Approved");
-                        }
-
-
                         if (timeLeft.isNegative() && !booking.isBookingCompleted())
                         {
 //                            btnStatus.setText("Car didn't left");
@@ -178,6 +241,20 @@ public class VendorBookingAdapter extends RecyclerView.Adapter<VendorBookingAdap
                             //btnStatus.setForegroundTintList(ColorStateList.valueOf(Color.parseColor("#fffff")));
 
                             btnAction.setText("Check authenticity");
+                        }
+
+                        if (booking.getBookingStatus() != null && booking.getBookingStatus().equalsIgnoreCase("pending")) {
+                            btnStatus.setText("Approve");
+                        }else if(booking.getBookingStatus() != null && booking.getBookingStatus().equalsIgnoreCase("Booked")){
+                            btnStatus.setText("Approved");
+                        }else if(booking.getBookingStatus() != null && booking.getBookingStatus().equalsIgnoreCase("Cancel")){
+                            if (booking.getPenalty() == 0.0){
+                                btnStatus.setVisibility(View.GONE);
+                                btnAction.setVisibility(View.GONE);
+                            }else {
+                                btnStatus.setText("Penalty " + booking.getPenalty());
+                                btnAction.setText("Clear Penalty");
+                            }
                         }
 
                     }

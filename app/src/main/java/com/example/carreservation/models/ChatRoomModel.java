@@ -14,16 +14,23 @@ public class ChatRoomModel
 
     String lastMessageSenderId;
 
+<<<<<<< Updated upstream
     String lastmessage;
 
     public ChatRoomModel() {
     }
+=======
+    String lastMessage;
+
+
+>>>>>>> Stashed changes
 
     public ChatRoomModel(String chatRoomId, List<String> userIds, Timestamp lastMessageTimestamp, String lastMessageSenderId) {
         this.chatRoomId = chatRoomId;
         this.userIds = userIds;
         this.lastMessageTimestamp = lastMessageTimestamp;
         this.lastMessageSenderId = lastMessageSenderId;
+<<<<<<< Updated upstream
 
     }
 
@@ -33,6 +40,19 @@ public class ChatRoomModel
 
     public void setLastmessage(String lastmessage) {
         this.lastmessage = lastmessage;
+=======
+    }
+
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+
+    public ChatRoomModel() {
+>>>>>>> Stashed changes
     }
 
     public String getChatRoomId() {

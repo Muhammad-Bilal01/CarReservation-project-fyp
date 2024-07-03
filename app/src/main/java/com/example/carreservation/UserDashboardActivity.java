@@ -41,7 +41,11 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
+<<<<<<< Updated upstream
 import com.example.carreservation.databinding.ActivityUserDashboardBinding;
+=======
+import com.example.carreservation.databinding.ActivityVendorDrawerBinding;
+>>>>>>> Stashed changes
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -61,7 +65,7 @@ public class UserDashboardActivity extends AppCompatActivity implements BottomNa
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityUserDashboardBinding binding;
     BottomNavigationView bottomNavigationView;
-    LinearLayout profileLayout,viewBookingsLayout,logoutLayout, supportLayout;
+    LinearLayout profileLayout,viewBookingsLayout,logoutLayout, supportLayout,balanceLayout;
     private ImageView imgDrawer;
     private TextView txtProfileTitle;
 
@@ -83,6 +87,7 @@ public class UserDashboardActivity extends AppCompatActivity implements BottomNa
         setContentView(binding.getRoot());
         supportLayout=findViewById(R.id.support_layout);
         viewBookingsLayout=findViewById(R.id.view_bookings_layout);
+        balanceLayout = findViewById(R.id.balance_layout);
         logoutLayout=findViewById(R.id.application_layout);
         profileLayout=findViewById(R.id.profile_layout);
         txtProfileTitle=findViewById(R.id.txt_profile_title);
@@ -141,6 +146,19 @@ public class UserDashboardActivity extends AppCompatActivity implements BottomNa
                         .beginTransaction()
                         .replace(R.id.flFragment, new CustomerBookingsFragment())
                         .commit();
+<<<<<<< Updated upstream
+=======
+            }
+        });
+
+        balanceLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleDrawer();
+
+                Intent intent = new Intent(UserDashboardActivity.this, Balance.class);
+                startActivity(intent);
+>>>>>>> Stashed changes
             }
         });
 

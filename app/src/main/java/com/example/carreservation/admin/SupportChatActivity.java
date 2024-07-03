@@ -1,6 +1,10 @@
 package com.example.carreservation.admin;
 
 import androidx.annotation.NonNull;
+<<<<<<< Updated upstream
+=======
+import androidx.annotation.Nullable;
+>>>>>>> Stashed changes
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,9 +29,23 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Firebase;
 import com.google.firebase.Timestamp;
+<<<<<<< Updated upstream
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+=======
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+>>>>>>> Stashed changes
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -42,13 +60,29 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+<<<<<<< Updated upstream
+=======
+import android.os.Bundle;
+import android.os.Handler;
+
+>>>>>>> Stashed changes
 public class SupportChatActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private EditText message_editText;
     private ImageView sendBtn, backBtn;
 
+<<<<<<< Updated upstream
     FirebaseFirestore firebaseFirestore;
+=======
+    private Handler handler;
+    private Runnable runnable;
+
+    FirebaseFirestore firebaseFirestore;
+    private DatabaseReference databaseReference;
+
+
+>>>>>>> Stashed changes
 
     String chatRoomId;
     ChatRoomModel chatRoomModel;
@@ -66,7 +100,11 @@ public class SupportChatActivity extends AppCompatActivity {
 
         String currentUserId = FirebaseUtils.currentUserId();
 //        get admin and currnet userId
+<<<<<<< Updated upstream
 //        TODO: ADMIN ID
+=======
+//       TODO: ADMIN ID
+>>>>>>> Stashed changes
         chatRoomId = FirebaseUtils.getChatRoomId(currentUserId, "EuOP9PZ32jUlPgQ3aRhFKtu0ce32");
         chatsArrayList = new ArrayList<>();
 
@@ -77,7 +115,10 @@ public class SupportChatActivity extends AppCompatActivity {
 
         getChatRoomModel();
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,10 +127,27 @@ public class SupportChatActivity extends AppCompatActivity {
                 if (message.isEmpty())
                     return;
                 sendMessageToUser(message);
+<<<<<<< Updated upstream
+=======
+//                sendMessage(message);
+>>>>>>> Stashed changes
             }
         });
 
         setupChatRecyclerView();
+<<<<<<< Updated upstream
+=======
+        // Initialize the Handler and Runnable
+//        handler = new Handler();
+//
+//        handler.postDelayed(new Runnable() {
+//            public void run() {
+//                System.out.println("myHandler: here!"); // Do your work here
+//                setupChatRecyclerView();
+//                handler.postDelayed(this, 1000);
+//            }
+//        }, 1000);
+>>>>>>> Stashed changes
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +158,10 @@ public class SupportChatActivity extends AppCompatActivity {
 
     }
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     private void setupChatRecyclerView() {
 
         adapter = new ChatMessageRecyclerAdapter(getApplicationContext(), chatsArrayList);
@@ -108,7 +170,27 @@ public class SupportChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
 
+<<<<<<< Updated upstream
         firebaseFirestore.collection("chatrooms").document(chatRoomId).collection("chats").orderBy("timestamp", Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+=======
+
+
+//        readMessages();
+
+
+
+
+        // Initialize Realtime Firebase
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference("chatrooms");
+
+         firebaseFirestore
+        .collection("chatrooms")
+        .document(chatRoomId)
+        .collection("chats")
+        .orderBy("timestamp", Query.Direction.DESCENDING)
+        .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+>>>>>>> Stashed changes
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
@@ -125,18 +207,25 @@ public class SupportChatActivity extends AppCompatActivity {
                         messageModel.setSenderId(model.get("senderId").toString());
                         Timestamp timestamp = convertStringToTimestamp(model.get("timestamp").toString());
                         messageModel.setTimestamp(timestamp);
+<<<<<<< Updated upstream
 
                         chatsArrayList.add(messageModel);
 
 
                     }
                     adapter.notifyDataSetChanged();
+=======
+                        chatsArrayList.add(messageModel);
+                        adapter.notifyDataSetChanged();
+                    }
+>>>>>>> Stashed changes
                 }
 
             }
         });
 
 
+<<<<<<< Updated upstream
 //        chatsArrayList.add(new ChatMessageModel("Hello", FirebaseUtils.currentUserId(), Timestamp.now()));
 //        adapter.notifyDataSetChanged();
 
@@ -147,6 +236,19 @@ public class SupportChatActivity extends AppCompatActivity {
                 recyclerView.smoothScrollToPosition(0);
             }
         });
+=======
+
+//        chatsArrayList.add(new ChatMessageModel("Hello", FirebaseUtils.currentUserId(), Timestamp.now()));
+//        adapter.notifyDataSetChanged();
+
+//        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+//            @Override
+//            public void onItemRangeInserted(int positionStart, int itemCount) {
+//                super.onItemRangeInserted(positionStart, itemCount);
+//                recyclerView.smoothScrollToPosition(0);
+//            }
+//        });
+>>>>>>> Stashed changes
 
     }
 
@@ -164,12 +266,60 @@ public class SupportChatActivity extends AppCompatActivity {
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    private void readMessages(){
+        // For real time Data
+        firebaseFirestore
+                .collection("chatrooms")
+                .document(chatRoomId)
+                .collection("chats")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        System.out.println("Func call");
+                        if (error != null) {
+                            System.err.println("Listen failed: " + error);
+                            return;
+                        }
+
+                        if (value != null ) {
+                            for (DocumentChange dc : value.getDocumentChanges()) {
+
+                                if (dc.getType() == DocumentChange.Type.ADDED) {
+
+                                    System.out.println("NEW DATA RECIEVED");
+                                    Map<String, Object> model = dc.getDocument().getData();
+                                    ChatMessageModel messageModel = new ChatMessageModel();
+                                    messageModel.setMessage(model.get("message").toString());
+                                    messageModel.setSenderId(model.get("senderId").toString());
+                                    Timestamp timestamp = convertStringToTimestamp(model.get("timestamp").toString());
+                                    messageModel.setTimestamp(timestamp);
+
+                                    chatsArrayList.add(messageModel);
+
+                                }
+                            }
+                            adapter.notifyDataSetChanged();
+
+                        }
+                    }
+
+                });
+    }
+
+>>>>>>> Stashed changes
     private void sendMessageToUser(String message) {
 
 
         chatRoomModel.setLastMessageTimestamp(Timestamp.now());
         chatRoomModel.setLastMessageSenderId(FirebaseUtils.currentUserId());
+<<<<<<< Updated upstream
         chatRoomModel.setLastmessage(message);
+=======
+        chatRoomModel.setLastMessage(message);
+>>>>>>> Stashed changes
         FirebaseUtils.getChatRoomRefernce(chatRoomId).set(chatRoomModel);
 
 
@@ -190,7 +340,11 @@ public class SupportChatActivity extends AppCompatActivity {
 //        setupChatRecyclerView();
     }
 
+<<<<<<< Updated upstream
     //    get or create ChatRoomModel
+=======
+   //    get or create ChatRoomModel
+>>>>>>> Stashed changes
     void getChatRoomModel() {
         FirebaseUtils.getChatRoomRefernce(chatRoomId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

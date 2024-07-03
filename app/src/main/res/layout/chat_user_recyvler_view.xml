@@ -5,7 +5,12 @@
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:elevation="2dp"
+<<<<<<< Updated upstream
     android:orientation="horizontal">
+=======
+    android:background="@drawable/ripple_effect"
+    >
+>>>>>>> Stashed changes
 
     <include
         layout="@layout/chat_profile_pic"
@@ -21,8 +26,11 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
+<<<<<<< Updated upstream
         <!--        Username and Timestamp -->
 
+=======
+>>>>>>> Stashed changes
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,4 +78,9 @@
     </LinearLayout>
 
 
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 </LinearLayout>

@@ -29,7 +29,7 @@ import java.util.List;
 public class CustomerBookingDetails extends AppCompatActivity {
 
     private ImageView backBtn, imgSpot,payment_image;
-    private TextView spotNameTxt, spotAddressTxt, spotNo, arrivingTime, leavingTime, amountTxt, seller_name, seller_id,payment_text;
+    private TextView spotNameTxt, spotAddressTxt, spotNo, arrivingTime, leavingTime, amountTxt, seller_name, seller_id,payment_text,amount_head_text;
 
     private LinearLayout payment_box;
 
@@ -75,6 +75,11 @@ public class CustomerBookingDetails extends AppCompatActivity {
                     leavingTime.setText(leaveTime);
                 }
 
+                if (booking.getBookingStatus().equalsIgnoreCase("Cancel")){
+                    amount_head_text.setText("Penalty");
+                    amountTxt.setText("PKR " + booking.getPenalty() );
+                }
+
 //                Set payment Method
 
 //                if (booking.getPaymentMode().equalsIgnoreCase("Online Payment")){
@@ -117,6 +122,7 @@ public class CustomerBookingDetails extends AppCompatActivity {
         seller_name = findViewById(R.id.seller_name);
         seller_id = findViewById(R.id.seller_id);
         payment_text = findViewById(R.id.payment_text);
+        amount_head_text = findViewById(R.id.amount_head_txt);
     }
 
     void onBackPress() {

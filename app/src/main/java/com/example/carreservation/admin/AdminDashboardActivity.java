@@ -32,6 +32,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+<<<<<<< Updated upstream
+=======
+import java.util.Objects;
+>>>>>>> Stashed changes
 
 public class AdminDashboardActivity extends AppCompatActivity {
 
@@ -73,7 +77,15 @@ public class AdminDashboardActivity extends AppCompatActivity {
                         ChatRoomModel chatRoomModel = new ChatRoomModel();
                         chatRoomModel.setUserIds((List<String>) model.get("userIds"));
                         chatRoomModel.setLastMessageTimestamp((Timestamp) model.get("lastMessageTimestamp"));
+<<<<<<< Updated upstream
                         chatRoomModel.setLastmessage(model.get("lastMessage").toString());
+=======
+                        if(model.get("lastMessage") == null){
+                            chatRoomModel.setLastMessage("");
+                        }else{
+                        chatRoomModel.setLastMessage(Objects.requireNonNull(model.get("lastMessage")).toString());
+                        }
+>>>>>>> Stashed changes
                         usersArrayList.add(chatRoomModel);
 
                     }

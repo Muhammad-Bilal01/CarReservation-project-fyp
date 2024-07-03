@@ -41,4 +41,16 @@ public class ChatMessageModel {
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
+<<<<<<< Updated upstream
+=======
+
+    @Override
+    public String toString() {
+        return "ChatMessageModel{" +
+                "message='" + message + '\'' +
+                ", senderId='" + senderId + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
+    }
+>>>>>>> Stashed changes
 }

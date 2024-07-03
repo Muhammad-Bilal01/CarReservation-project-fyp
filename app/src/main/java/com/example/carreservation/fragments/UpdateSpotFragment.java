@@ -189,7 +189,11 @@ public class UpdateSpotFragment extends Fragment implements OnItemClickListener 
         if (bookingFound){
             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
             builder.setTitle("Booking Found")
+<<<<<<< Updated upstream
                     .setMessage("You are not able to Update this spot")
+=======
+                    .setMessage("You are not able to update this spot")
+>>>>>>> Stashed changes
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

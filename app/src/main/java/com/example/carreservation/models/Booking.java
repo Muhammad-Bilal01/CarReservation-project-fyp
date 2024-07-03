@@ -11,6 +11,19 @@ public class Booking {
 
     private String userFCMToken;
 
+<<<<<<< Updated upstream
+=======
+    private double penalty;
+
+    public double getPenalty() {
+        return penalty;
+    }
+
+    public void setPenalty(double penalty) {
+        this.penalty = penalty;
+    }
+
+>>>>>>> Stashed changes
     public String getBookingStatus() {
         return bookingStatus;
     }

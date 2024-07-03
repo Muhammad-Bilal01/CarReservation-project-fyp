@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -49,6 +50,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -56,6 +58,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -497,7 +503,8 @@ public class ViewSpotDetailsFragment extends Fragment {
     }
 
     private void showAvailableSlots(String selectedDate) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+        String sdate = "";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 
 
             List<Map<String, Object>> DaySlots = new ArrayList<>();
@@ -535,7 +542,12 @@ public class ViewSpotDetailsFragment extends Fragment {
 
                         selectedSlots.put("slot", value);
                     }
+
                     System.out.println("Key: " + key + ", Value: " + value);
+                    if (key.toString().equalsIgnoreCase("date")) {
+                       sdate = value.toString();
+                        System.out.println(sdate);
+                    }
                 }
             }
 
@@ -543,6 +555,8 @@ public class ViewSpotDetailsFragment extends Fragment {
                     selectedSlots.entrySet()) {
                 Object key = timesAvailable.getKey();
                 Object val = timesAvailable.getValue();
+
+
 
 
                 if (key.toString() == "slot") {
@@ -606,17 +620,58 @@ public class ViewSpotDetailsFragment extends Fragment {
                 chip.setChipBackgroundColorResource(R.color.background_color_chip_state_list);
             }
 
+
             if (timeSlots != null && timeSlots.size() > 0) {
 //                List<AvailableSlot> availableSlots = spot.getAvailableSlots().stream().filter(x -> x.getDate().equals(selectedDate)).collect(Collectors.toList());
 
                 for (int i = 0; i < timeSlots.size(); i++) {
+                    System.out.println("Time <--  "+timeSlots.get(i).get("time")+" -->");
+
+                    String parkingTime = timeSlots.get(i).get("time").toString();
+
                     Chip chip = (Chip) chipGroup.getChildAt(i);
+
                     chip.setText(timeSlots.get(i).get("time").toString());
                     chip.setVisibility(View.VISIBLE);
+
+                    LocalDateTime dateTime = parseDateTime(sdate,timeSlots.get(i).get("time").toString());
+
                     if (timeSlots.get(i).get("isBooked").toString().equalsIgnoreCase("true")) {
                         chip.setClickable(false);
-                        chip.setChipBackgroundColorResource(com.google.android.libraries.places.R.color.quantum_grey500);
+
+                        chip.setChipBackgroundColorResource(R.color.lightGrey);
+//                        chip.setChipBackgroundColorResource(com.google.android.libraries.places.R.color.quantum_grey500);
                     }
+
+                    LocalDateTime currentDateTime = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        currentDateTime = LocalDateTime.now();
+                    }
+                    // Compare the date and time
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        if (currentDateTime.isBefore(dateTime)) {
+
+                            System.out.println("The given date and time are in the future.");
+                        } else if (currentDateTime.isAfter(dateTime)) {
+                            chip.setVisibility(View.GONE);
+                            System.out.println("The given date and time are in the past.");
+                        } else {
+                            System.out.println("The given date and time are in the present.");
+                        }
+                    }
+
+//                    ---------------------------------
+
+//                    if (timeSlots.get(i).get("isBooked").toString().equalsIgnoreCase("true")) {
+//                        chip.setClickable(false);
+//
+//                        chip.setChipBackgroundColorResource(R.color.lightGrey);
+////                        chip.setChipBackgroundColorResource(com.google.android.libraries.places.R.color.quantum_grey500);
+//
+//
+//                    }
+//
+
                 }
 //                if (timeSlots.size() == 0)
 //                    Toast.makeText(getActivity(), "No slot available try some other dates", Toast.LENGTH_SHORT).show();
@@ -653,6 +708,47 @@ public class ViewSpotDetailsFragment extends Fragment {
 */
         }
     }
+
+
+    private static LocalDateTime parseDateTime(String dateStr, String timeStr) {
+        // Parse the date string
+        LocalDate date = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            date = LocalDate.parse(dateStr);
+        }
+
+        // Parse the time string and adjust the date if needed
+        LocalTime time = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            // Split the time string by space
+            String[] parts = timeStr.split("\\s+");
+
+            // Parse the hour and AM/PM indicator
+            int hour = Integer.parseInt(parts[0]);
+            boolean isAM = parts[1].equalsIgnoreCase("AM");
+
+            // Adjust hour for PM
+            if (!isAM && hour < 12) {
+                hour += 12;
+            }
+
+            // Parse the time string into LocalTime
+            // Construct LocalTime object
+            time = LocalTime.of(hour % 24, 0);
+//                    time = LocalTime.parse(timeStr, formatter);
+            System.out.println("Parsed LocalTime: " + time);
+
+
+        }
+
+        LocalDateTime dateTime = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            dateTime = LocalDateTime.of(date, time);
+        }
+
+        return dateTime;
+    }
+
 
     private String formatDate(Calendar calendar) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());

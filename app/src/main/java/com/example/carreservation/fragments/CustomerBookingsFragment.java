@@ -116,8 +116,15 @@ public class CustomerBookingsFragment extends Fragment implements SelectBookingL
                                 // that list to our object class.
                                 Booking booking = d.toObject(Booking.class);
                                 booking.setId(d.getId());
+
                                 bookings.add(booking);
 
+                                db.collection("Bookings").document(d.getId()).update("id",d.getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+
+                                    }
+                                });
 
                             }
                             // after adding the data to recycler view.

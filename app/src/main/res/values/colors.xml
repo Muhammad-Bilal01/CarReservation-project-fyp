@@ -17,5 +17,11 @@
     <color name="chat_color_sender">#004AAD</color>
 <!--    <color name="chat_color_reciever">#1E88E5</color>-->
     <color name="chat_color_reciever">#7CB342</color>
+<<<<<<< Updated upstream
+=======
+    <color name="color_red">#FF0000</color>
+    <color name="spot_card">#004aad</color>
+
+>>>>>>> Stashed changes
 
 </resources>
