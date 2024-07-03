@@ -2,6 +2,7 @@ package com.example.carreservation.adapters;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -23,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.carreservation.CommonRegistrationActivity2;
 import com.example.carreservation.CustomerBookingDetails;
 import com.example.carreservation.R;
 import com.example.carreservation.fragments.ReviewBottomSheetFragments;
@@ -37,7 +39,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.Chip;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
@@ -59,6 +63,7 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
     private Context mContext;
 
     private boolean isReview = false;
+    private boolean isCancel = false;
 
 
     public CustomerBookingAdapter(Context context, List<Booking> bookings, SelectBookingListener listener) {
@@ -108,40 +113,37 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
                             Button submitBtn = dialog.findViewById(R.id.submitBtn);
 
                             submitBtn.setOnClickListener(
-                                    new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            float rating = ratingBar.getRating();
-                                            Map<String, Object> reviewsData = new HashMap<String, Object>();
-                                            reviewsData.put("customerId", bookingViewModel.getCustomerId());
-                                            reviewsData.put("customerName", bookingViewModel.getCustomerName());
-                                            reviewsData.put("spotId", bookingViewModel.getSpotId());
-                                            reviewsData.put("vendorId", bookingViewModel.getVendorId());
-                                            reviewsData.put("reviews", rating);
-                                            reviewsData.put("message", reviewMsg.getText().toString());
-                                            FirebaseFirestore.getInstance().collection("reviews").add(reviewsData).addOnSuccessListener(
-                                                    new OnSuccessListener<DocumentReference>() {
+                                    v1 -> {
+                                        float rating = ratingBar.getRating();
+                                        Map<String, Object> reviewsData = new HashMap<String, Object>();
+                                        reviewsData.put("customerId", bookingViewModel.getCustomerId());
+                                        reviewsData.put("customerName", bookingViewModel.getCustomerName());
+                                        reviewsData.put("spotId", bookingViewModel.getSpotId());
+                                        reviewsData.put("vendorId", bookingViewModel.getVendorId());
+                                        reviewsData.put("reviews", rating);
+                                        reviewsData.put("message", reviewMsg.getText().toString());
+                                        FirebaseFirestore.getInstance().collection("reviews").add(reviewsData).addOnSuccessListener(
+                                                new OnSuccessListener<DocumentReference>() {
 
-                                                        @Override
-                                                        public void onSuccess(DocumentReference documentReference) {
-                                                            FirebaseFirestore.getInstance().collection("Bookings")
-                                                                    .document(bookingViewModel.getId())
-                                                                    .update("bookingStatus", "Success").addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                            setIsReview(true);
+                                                    @Override
+                                                    public void onSuccess(DocumentReference documentReference) {
+                                                        FirebaseFirestore.getInstance().collection("Bookings")
+                                                                .document(bookingViewModel.getId())
+                                                                .update("bookingStatus", "Success").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        setIsReview(true);
 //                                                                            notifyDataSetChanged();
-                                                                            Toast.makeText(mContext, "Status Update", Toast.LENGTH_SHORT).show();
+                                                                        Toast.makeText(mContext, "Status Update", Toast.LENGTH_SHORT).show();
 
-                                                                        }
-                                                                    });
-                                                            Toast.makeText(mContext, "Thanks for Your Review", Toast.LENGTH_SHORT).show();
-                                                            dialog.dismiss();
-                                                        }
+                                                                    }
+                                                                });
+                                                        Toast.makeText(mContext, "Thanks for Your Review", Toast.LENGTH_SHORT).show();
+                                                        dialog.dismiss();
                                                     }
-                                            );
+                                                }
+                                        );
 //                                        System.out.println(reviewsData);
-                                        }
                                     }
                             );
                         }
@@ -150,10 +152,150 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
                 }
         );
 
+        holder.btnCompeleteOrIngProgres.setOnClickListener(v -> {
+            if(holder.btnCompeleteOrIngProgres.getText().equals("Cancel")){
+                if(holder.chipIsApproved.getText().equals("Pending")){
+                    FirebaseFirestore.getInstance().collection("Bookings")
+                            .document(bookingViewModel.getId())
+                            .update("bookingStatus", "Cancel").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    setIsCancel(true);
+//                                    notifyDataSetChanged();
+                                    Toast.makeText(mContext, "Status Update", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                    Toast.makeText(mContext, "Your Ride has been cancelled", Toast.LENGTH_SHORT).show();
+                    System.out.println("Cancel");
+                }else if(holder.chipIsApproved.getText().equals("Booked")){
+                    ProgressDialog progressDialog
+                            = new ProgressDialog(holder.itemView.getContext());
+                    progressDialog.setTitle("Process");
+
+                    progressDialog.setMessage("Please wait while we are processing your request");
+                    progressDialog.show();
+
+                    double bookingAmount = Double.parseDouble( bookingViewModel.getTotalAmount().toString());
+                    double percent = 25.0 / 100.0;
+                    double penalty = bookingAmount * percent;
+
+
+
+                    System.out.println(bookingViewModel.getId());
+
+                    FirebaseFirestore.getInstance().collection("Bookings")
+                            .document(bookingViewModel.getId())
+                            .update(
+                                    "bookingStatus", "Cancel",
+                                    "penalty",penalty,
+                                    "id",bookingViewModel.getId()
+                            ).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    Intent intent = new Intent(holder.itemView.getContext(), CustomerBookingDetails.class);
+//                                    startActivity(intent);
+
+                                    setIsCancel(true);
+//                                    notifyDataSetChanged();
+                                    progressDialog.dismiss();
+                                    Toast.makeText(mContext, "Status Update", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                    String currentUser = Objects.requireNonNull(auth.getCurrentUser()).getUid();
+
+                    FirebaseFirestore.getInstance().collection("Users").document(currentUser).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists()) {
+                                // Check if the penalty field exists and is not null
+                                if (documentSnapshot.contains("penalty") && documentSnapshot.get("penalty") != null) {
+                                    // Get the penalty value
+                                    double userPenalty = documentSnapshot.getDouble("penalty"); // Assuming penalty is stored as a double
+                                    // Handle the penalty value
+                                    System.out.println(penalty);
+
+//                  Update UserPenalty
+                                    double totalPenalty = penalty + userPenalty;
+                                    FirebaseFirestore.getInstance().collection("Users").document(currentUser)
+                                            .update(
+                                                    "penalty",totalPenalty
+                                            ).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    setIsCancel(true);
+                                                    Toast.makeText(mContext, "Status Update", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+
+                                } else {
+                                    // Handle the case where penalty is null or doesn't exist
+                                    System.out.println("Penalty Not Found");
+
+//                  Update UserPenalty
+                                FirebaseFirestore.getInstance().collection("Users").document(currentUser)
+                                            .update(
+                                                    "penalty",penalty
+                                            ).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    setIsCancel(true);
+//                                    notifyDataSetChanged();
+                                                    Toast.makeText(mContext, "Status Update", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+
+                                }
+                            } else {
+                                System.out.println("Document Not Found");
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
+
         if (isReview) {
             holder.btnReview.setVisibility(View.GONE);
         }
 
+        if (isCancel){
+
+            holder.chipIsApproved.setText("Cancel");
+            holder.btnCompeleteOrIngProgres.setText("Canceled");
+            holder.btnReview.setVisibility(View.GONE);
+
+        }
+
+    }
+
+    double getUserPenalty(String userID){
+        final double[] userPenalty = {0.0};
+        FirebaseFirestore.getInstance().collection("Users").document(userID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    // Check if the penalty field exists and is not null
+                    if (documentSnapshot.contains("penalty") && documentSnapshot.get("penalty") != null) {
+                        // Get the penalty value
+                        double penalty = documentSnapshot.getDouble("penalty"); // Assuming penalty is stored as a double
+                        // Handle the penalty value
+                        System.out.println(penalty);
+                        userPenalty[0] = penalty;
+
+                    } else {
+                        // Handle the case where penalty is null or doesn't exist
+                        System.out.println("Penalty Not Found");
+                    }
+                } else {
+                    System.out.println("Document Not Found");
+                }
+            }
+        });
+         return userPenalty[0];
     }
 
     @Override
@@ -165,6 +307,12 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
         this.isReview = isReview;
         notifyDataSetChanged();
     }
+
+    public void setIsCancel(boolean isCancel) {
+        this.isCancel = isCancel;
+        notifyDataSetChanged();
+    }
+
 
     public static class CustomerBookingViewHolder extends RecyclerView.ViewHolder {
         private TextView nameTextView, txtArriving, txtLeaving, txtCarRegistration, txtCarName, txtCarYear, txtTotalPrice;
@@ -197,7 +345,7 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
             materialCardView = itemView.findViewById(R.id.cardView);
             imgExpandClose = itemView.findViewById(R.id.img_open_close);
             imgSpot = itemView.findViewById(R.id.img_spot);
-            materialCardView = itemView.findViewById(R.id.cardView);
+//            materialCardView = itemView.findViewById(R.id.cardView);
             hideView = itemView.findViewById(R.id.hideView);
             chipIsApproved = itemView.findViewById(R.id.chipIsApproved);
 
@@ -230,6 +378,8 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
             nameTextView.setText(booking.getSpotName());
             addressTextView.setText(booking.getSpotAddress());
             chipIsApproved.setText(booking.getBookingStatus() != null ? booking.getBookingStatus() : "waiting");
+
+
 
 //            for image
             if (booking.getSpotImages() != null && booking.getSpotImages().length() > 0)
@@ -268,16 +418,30 @@ public class CustomerBookingAdapter extends RecyclerView.Adapter<CustomerBooking
                         btnDuration.setText(selectedSlots.size() + " h");
 
 
+                       // btnCompeleteOrIngProgres.setText("Cancel");
+
                         if (timeLeft.isNegative()) {
 
                             btnReview.setVisibility(View.VISIBLE);
-                            btnCompeleteOrIngProgres.setText("Completed");
+                          //  btnCompeleteOrIngProgres.setText("Cancel");
 
 
                         } else {
                             btnReview.setVisibility(View.GONE);
-                            btnCompeleteOrIngProgres.setText("In-Progress");
+                           // btnCompeleteOrIngProgres.setText("Cancel");
                         }
+
+                        if(chipIsApproved.getText().equals("Pending") || chipIsApproved.getText().equals("Booked")){
+                            btnCompeleteOrIngProgres.setText("Cancel");
+                        }
+                        else if(chipIsApproved.getText().equals("Cancel")){
+                            btnCompeleteOrIngProgres.setText("Cancelled");
+                            btnReview.setVisibility(View.GONE);
+                        }
+                        else{
+                            btnCompeleteOrIngProgres.setText("Completed");
+                        }
+
                     }
 
                 } else {
