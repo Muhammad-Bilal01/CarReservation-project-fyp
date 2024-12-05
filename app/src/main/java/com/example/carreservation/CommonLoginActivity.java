@@ -62,16 +62,22 @@ public class CommonLoginActivity extends AppCompatActivity {
                 clearErrors();
                 boolean isValid = verifyInformation();
 
+
                 if (isValid)
                 {
                     String email = emailET.getText().toString();
                     String password = passwordET.getText().toString();
+                    if(email.equalsIgnoreCase("admin@admin.com") && password.equalsIgnoreCase("admin123")){
+                        Toast.makeText(getApplicationContext(),"Admin Login", Toast.LENGTH_SHORT).show();
+                    }else{
+                        progressDialog.setMessage("Verifying User");
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
 
-                    progressDialog.setMessage("Verifying User");
-                    progressDialog.setCancelable(false);
-                    progressDialog.show();
+                        validateUserFromFirebase(email, password);
+                    }
 
-                    validateUserFromFirebase(email, password);
+
                 }
             }
         });
@@ -88,6 +94,7 @@ public class CommonLoginActivity extends AppCompatActivity {
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user != null)
                         {
+
                             if (user.isEmailVerified())
                             {
 //                                if(FirebaseFirestore.getInstance().collection("Users").whereEqualTo("userType", "Customer").get().isSuccessful()){
@@ -104,6 +111,11 @@ public class CommonLoginActivity extends AppCompatActivity {
                                         if(usertype.equals("Customer")){
                                             startActivity(new Intent(CommonLoginActivity.this, UserDashboardActivity.class));
                                             Toast.makeText(CommonLoginActivity.this, "Logged In Successfully(Customer)", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        }
+                                        else if(usertype.equals("Admin")){
+//                                            startActivity(new Intent(CommonLoginActivity.this, UserDashboardActivity.class));
+                                            Toast.makeText(CommonLoginActivity.this, "Admin", Toast.LENGTH_SHORT).show();
                                             finish();
                                         }
                                         else if(usertype.equals("Vendor")){

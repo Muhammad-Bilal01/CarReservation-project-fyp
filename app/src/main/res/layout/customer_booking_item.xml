@@ -58,7 +58,7 @@
 
             <TextView
                 android:id="@+id/txt_spot_name"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
@@ -67,12 +67,17 @@
                 android:fontFamily="@font/sans"
                 android:text="Fleeting area"
                 android:textColor="@color/white"
+                android:ems="3"
+                android:lines="1"
+                android:ellipsize="end"
                 android:textSize="18sp" />
+
+
 
             <TextView
                 android:id="@+id/txt_spot_address"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
                 android:layout_below="@id/txt_spot_name"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
@@ -81,7 +86,11 @@
                 android:fontFamily="@font/sans"
                 android:text="Fleeting area"
                 android:textColor="@color/white"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                android:ems="3"
+                android:lines="2"
+                android:ellipsize="end"
+                />
 
             <TextView
                 android:id="@+id/txt_time_left"

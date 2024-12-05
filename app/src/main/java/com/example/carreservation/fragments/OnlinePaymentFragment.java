@@ -270,6 +270,8 @@ public class OnlinePaymentFragment extends Fragment {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
 
                 String fullName=documentSnapshot.getData().get("fullName").toString();
+                String userFCMToken = documentSnapshot.getData().get("FCM_Token").toString(); // for getting user FCM Token
+
                 Booking booking=new Booking(bookingViewModel.getId().getValue(),
                         bookingViewModel.getSpotName().getValue(),
                         bookingViewModel.getSpotAddress().getValue(),
@@ -285,6 +287,7 @@ public class OnlinePaymentFragment extends Fragment {
                         FirebaseAuth.getInstance().getCurrentUser().getUid(),
                         false,
                         fullName,
+                        userFCMToken,
                         bookingViewModel.gtSpotImages().getValue()
                 );
 

@@ -97,6 +97,7 @@ public class CustomerBookingsFragment extends Fragment implements SelectBookingL
         customerBookingAdapter = new CustomerBookingAdapter(getContext(),bookings, this);
         recyclerView.setAdapter(customerBookingAdapter);
         db = FirebaseFirestore.getInstance();
+
         db.collection("Bookings").whereEqualTo("customerId", FirebaseAuth.getInstance().getCurrentUser().getUid()).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override

@@ -9,6 +9,7 @@ public class Booking {
     private String spotAddress;
     private String bookingStatus;
 
+    private String userFCMToken;
     public String getBookingStatus() {
         return bookingStatus;
     }
@@ -65,6 +66,16 @@ public class Booking {
 
     private boolean isBookingCompleted;
 
+
+
+    public String getUserFCMToken() {
+        return userFCMToken;
+    }
+
+    public void setUserFCMToken(String userFCMToken) {
+        this.userFCMToken = userFCMToken;
+    }
+
     public Booking() {
     }
 
@@ -72,7 +83,7 @@ public class Booking {
                    String bookingStatus,
                    String vehicleRegistrationNumber, String paymentScreenShotUrl,
                    String selectedDate, Double totalAmount, String paymentMode, String vendorId, String spotId,
-                   List<SelectedSlot> selectedSlots, String customerId, boolean isBookingCompleted, String customerName,String spotImages) {
+                   List<SelectedSlot> selectedSlots, String customerId, boolean isBookingCompleted, String customerName,String userFCMToken, String spotImages) {
         this.id = id;
         this.spotName = spotName;
         this.spotAddress = spotAddress;
@@ -88,6 +99,7 @@ public class Booking {
         this.customerId = customerId;
         this.isBookingCompleted=isBookingCompleted;
         this.customerName=customerName;
+        this.userFCMToken = userFCMToken;
         this.spotImages=spotImages;
     }
 

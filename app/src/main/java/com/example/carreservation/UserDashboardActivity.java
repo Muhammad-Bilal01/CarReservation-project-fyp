@@ -118,10 +118,10 @@ public class UserDashboardActivity extends AppCompatActivity implements BottomNa
             @Override
             public void onClick(View view) {
                 handleDrawer();
-                /*getSupportFragmentManager()
+                getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.flFragment, new VendorBookingsFragment())
-                        .commit();*/
+                        .replace(R.id.flFragment, new CustomerBookingsFragment())
+                        .commit();
             }
         });
 

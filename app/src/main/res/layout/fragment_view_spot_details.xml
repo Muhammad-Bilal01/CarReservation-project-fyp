@@ -24,11 +24,12 @@
 
     <TextView
         android:id="@+id/txtSpotName"
-        android:layout_width="wrap_content"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:text="Parking"
         android:fontFamily="@font/sans"
         android:textStyle="bold"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="5dp"
 
